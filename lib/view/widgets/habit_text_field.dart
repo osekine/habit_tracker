@@ -1,13 +1,32 @@
 import 'package:flutter/material.dart';
 
-class HabitTextField extends StatelessWidget {
+class HabitTextField extends StatefulWidget {
   final TextEditingController controller;
   final String? hint;
-  const HabitTextField({super.key, required this.controller, this.hint});
+  final FocusNode focusNode;
+  const HabitTextField({
+    super.key,
+    required this.controller,
+    required this.focusNode,
+    this.hint,
+  });
+
+  @override
+  State<HabitTextField> createState() => _HabitTextFieldState();
+}
+
+class _HabitTextFieldState extends State<HabitTextField> {
+  late final FocusNode _focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = widget.focusNode;
+  }
 
   @override
   Widget build(BuildContext context) {
-    final labelText = hint;
+    final labelText = widget.hint;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Column(
@@ -26,7 +45,9 @@ class HabitTextField extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.fromLTRB(12, 8, 16, 8),
               child: TextField(
-                controller: controller,
+                focusNode: _focusNode,
+                onTapOutside: (event) => _focusNode.unfocus(),
+                controller: widget.controller,
                 decoration: const InputDecoration.collapsed(hintText: null),
               ),
             ),

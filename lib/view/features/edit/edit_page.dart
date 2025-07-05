@@ -11,8 +11,10 @@ class EditPage extends StatefulWidget {
 }
 
 class _EditPageState extends State<EditPage> {
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _descController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _descController = TextEditingController();
+  final _nameFocusNode = FocusNode();
+  final _descFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -33,8 +35,16 @@ class _EditPageState extends State<EditPage> {
                 child: Center(child: Text('Choose your icon')),
               ),
             ),
-            HabitTextField(controller: _nameController, hint: 'Name'),
-            HabitTextField(controller: _descController, hint: 'Description'),
+            HabitTextField(
+              controller: _nameController,
+              hint: 'Name',
+              focusNode: _nameFocusNode,
+            ),
+            HabitTextField(
+              controller: _descController,
+              hint: 'Description',
+              focusNode: _descFocusNode,
+            ),
             const SizedBox(height: 4),
             const RepaintBoundary(child: ColorTable()),
           ],
@@ -42,4 +52,13 @@ class _EditPageState extends State<EditPage> {
       ),
     ),
   );
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _nameFocusNode.dispose();
+    _descController.dispose();
+    _descFocusNode.dispose();
+    super.dispose();
+  }
 }
