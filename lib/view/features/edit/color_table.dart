@@ -40,8 +40,8 @@ class _ColorTableState extends State<ColorTable> {
                         child: ColorCell(
                           size: cellSize,
                           color:
-                              ColorCollection
-                                  .habits[columnsCount * y + x]
+                              ColorCollection.habits.values
+                                  .toList()[columnsCount * y + x]
                                   .baseColor,
                           isChosen: columnsCount * y + x == chosenColor,
                         ),
