@@ -3,7 +3,7 @@ import 'package:habit_tracker/domain/habit.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-@Injectable(as: IHabitsRepository)
+@LazySingleton(as: IHabitsRepository)
 class HabitsRepository implements IHabitsRepository {
   // TODO(NLU): change to save/load with storage
   Map<int, Habit> habits = {};

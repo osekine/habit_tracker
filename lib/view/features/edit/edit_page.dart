@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:habit_tracker/view/features/edit/color_table.dart';
 import 'package:habit_tracker/view/widgets/habit_icon_button.dart';
 import 'package:habit_tracker/view/widgets/habit_text_field.dart';
+import 'package:habit_tracker/view_model/view_model.dart';
 
 class EditPage extends StatefulWidget {
-  const EditPage({super.key});
+  final IEditPageViewModel vm;
+  const EditPage({super.key, required this.vm});
 
   @override
   State<EditPage> createState() => _EditPageState();
@@ -15,12 +17,27 @@ class _EditPageState extends State<EditPage> {
   final _descController = TextEditingController();
   final _nameFocusNode = FocusNode();
   final _descFocusNode = FocusNode();
+  
 
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
       leading: HabitIconButton(onTap: () {}, icon: Icons.close),
-      actions: [HabitIconButton(onTap: () {}, icon: Icons.check)],
+      actions: [
+        HabitIconButton(
+          onTap:
+              () {
+                widget.vm.saveHabit(
+                _nameController.text,
+                _descController.text,
+                // TODO(NLU): fix
+                'yellow',
+              );
+              Navigator.of(context).pop();
+              },
+          icon: Icons.check,
+        ),
+      ],
     ),
     body: SingleChildScrollView(
       child: Padding(

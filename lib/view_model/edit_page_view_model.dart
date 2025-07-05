@@ -14,7 +14,7 @@ class EditPageViewModel implements IEditPageViewModel {
 
   @override
   void saveHabit(String name, String? description, String colorName) {
-    final newId = Random().nextInt(0xFFFFFFFFF);
+    final newId = Random().nextInt(0xFFFFF);
     _repository.saveHabits(
       Habit(
         id: newId,

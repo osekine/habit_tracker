@@ -3,8 +3,15 @@ import 'package:habit_tracker/view/features/home/year_habit_widget.dart';
 import 'package:habit_tracker/view/widgets/habit_icon_button.dart';
 import 'package:habit_tracker/view_model/view_model.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomePage extends StatefulWidget {
+  final IHomePageViewModel vm;
+  const HomePage({super.key, required this.vm});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -14,11 +21,23 @@ class HomePage extends StatelessWidget {
           onTap: () async {
             // TODO(NLU): change to GoRouter
             await Navigator.of(context).pushNamed('/edit');
+            widget.vm.init();
+            // TODO(NLU): fix
+            setState(() {
+            });
           },
           icon: Icons.edit,
         ),
       ],
     ),
-    body: Center(child: YearHabitWidget(vm: stubYear)),
+    body: SingleChildScrollView(
+      child: Center(
+        child: Column(
+          children: [
+            for (final habit in widget.vm.habits) YearHabitWidget(vm: habit),
+          ],
+        ),
+      ),
+    ),
   );
 }
