@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:habit_tracker/view/widgets/day_habit_widget.dart';
+import 'package:habit_tracker/view/features/home/day_habit_widget.dart';
 import 'package:habit_tracker/view_model/view_model.dart';
 
 class YearActivityWidget extends StatelessWidget {
