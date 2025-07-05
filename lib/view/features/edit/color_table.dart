@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:habit_tracker/theme/habit_colors.dart';
+import 'package:habit_tracker/view/features/edit/color_cell.dart';
 
-class ColorTable extends StatelessWidget {
+class ColorTable extends StatefulWidget {
   const ColorTable({super.key});
+
+  @override
+  State<ColorTable> createState() => _ColorTableState();
+}
+
+class _ColorTableState extends State<ColorTable> {
+  int colorIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -22,14 +30,10 @@ class ColorTable extends StatelessWidget {
             spacing: spacing,
             children: [
               for (int x = 0; x < columnsCount; ++x)
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color:
-                        ColorCollection.habits[columnsCount * y + x].baseColor,
-                  ),
-                  height: cellSize,
-                  width: cellSize,
+                ColorCell(
+                  size: cellSize,
+                  color: ColorCollection.habits[columnsCount * y + x].baseColor,
+                  isChosen: columnsCount * y + x == colorIndex,
                 ),
             ],
           ),
