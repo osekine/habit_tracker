@@ -36,7 +36,7 @@ class _EditPageState extends State<EditPage> {
             HabitTextField(controller: _nameController, hint: 'Name'),
             HabitTextField(controller: _descController, hint: 'Description'),
             const SizedBox(height: 4),
-            const ColorTable(),
+            const RepaintBoundary(child: ColorTable()),
           ],
         ),
       ),

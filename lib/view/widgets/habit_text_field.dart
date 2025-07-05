@@ -21,9 +21,7 @@ class HabitTextField extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(16),
-              boxShadow: const [
-                BoxShadow(offset: Offset(0, 5), blurRadius: 5),
-              ],
+              boxShadow: const [BoxShadow(offset: Offset(0, 5), blurRadius: 5)],
             ),
             child: Padding(
               padding: const EdgeInsets.fromLTRB(12, 8, 16, 8),

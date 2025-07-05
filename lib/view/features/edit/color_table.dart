@@ -10,7 +10,7 @@ class ColorTable extends StatefulWidget {
 }
 
 class _ColorTableState extends State<ColorTable> {
-  int colorIndex = 0;
+  final _colorIndex = ValueNotifier<int>(0);
 
   @override
   Widget build(BuildContext context) {
@@ -19,27 +19,39 @@ class _ColorTableState extends State<ColorTable> {
 
     const rowsCount = 4;
     final columnsCount = ColorCollection.habits.length ~/ rowsCount;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text('Color'),
-        const SizedBox(height: 12),
-        for (int y = 0; y < rowsCount; ++y) ...[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            spacing: spacing,
+    return ValueListenableBuilder(
+      valueListenable: _colorIndex,
+      builder:
+          (_, chosenColor, __) => Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              for (int x = 0; x < columnsCount; ++x)
-                ColorCell(
-                  size: cellSize,
-                  color: ColorCollection.habits[columnsCount * y + x].baseColor,
-                  isChosen: columnsCount * y + x == colorIndex,
+              const Text('Color'),
+              const SizedBox(height: 12),
+              for (int y = 0; y < rowsCount; ++y) ...[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: spacing,
+                  children: [
+                    for (int x = 0; x < columnsCount; ++x)
+                      GestureDetector(
+                        onTap: () {
+                          _colorIndex.value = columnsCount * y + x;
+                        },
+                        child: ColorCell(
+                          size: cellSize,
+                          color:
+                              ColorCollection
+                                  .habits[columnsCount * y + x]
+                                  .baseColor,
+                          isChosen: columnsCount * y + x == chosenColor,
+                        ),
+                      ),
+                  ],
                 ),
+                if (y < rowsCount - 1) const SizedBox(height: spacing),
+              ],
             ],
           ),
-          if (y < rowsCount - 1) const SizedBox(height: spacing),
-        ],
-      ],
     );
   }
 }
