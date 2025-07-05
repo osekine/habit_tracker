@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:habit_tracker/view/features/edit/color_table.dart';
 import 'package:habit_tracker/view/widgets/habit_icon_button.dart';
 import 'package:habit_tracker/view/widgets/habit_text_field.dart';
 
@@ -34,7 +35,8 @@ class _EditPageState extends State<EditPage> {
             ),
             HabitTextField(controller: _nameController, hint: 'Name'),
             HabitTextField(controller: _descController, hint: 'Description'),
-            // ColorTable(),
+            const SizedBox(height: 4),
+            const ColorTable(),
           ],
         ),
       ),
