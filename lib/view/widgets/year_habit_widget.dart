@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:habit_tracker/view/widgets/dumb_button.dart';
+import 'package:habit_tracker/view_model/view_model.dart';
 
 class YearHabitWidget extends StatelessWidget {
-  const YearHabitWidget({super.key});
+  final IYearHabitViewModel vm;
+  const YearHabitWidget({required this.vm, super.key});
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -19,35 +21,23 @@ class YearHabitWidget extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Row(
+            Row(
               children: [
-                DumbButton(),
+                const DumbButton(),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [Text('Habit Name'), Text('Habit description')],
+                      children: [Text(vm.name), Text(vm.description ?? '')],
                     ),
                   ),
                 ),
-                DumbButton(),
+                const DumbButton(),
               ],
             ),
             const SizedBox(height: 8),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  for (var i = 0; i < 52; ++i)
-                    Column(
-                      children: [
-                        for (var i = 0; i < 5; ++i) const DayHabitWidget(),
-                      ],
-                    ),
-                ],
-              ),
-            ),
+            YearActivityWidget(days: vm.days),
           ],
         ),
       ),
@@ -55,17 +45,45 @@ class YearHabitWidget extends StatelessWidget {
   );
 }
 
+class YearActivityWidget extends StatelessWidget {
+  final List<IDayHabitViewModel> days;
+  const YearActivityWidget({required this.days, super.key});
+
+  @override
+  Widget build(BuildContext context) => SingleChildScrollView(
+    scrollDirection: Axis.horizontal,
+    child: Row(
+      children: [
+        for (var x = 51; x >= 0; --x)
+          Column(
+            children: [
+              for (var y = 6; y >= 0; --y)
+                DayHabitWidget(
+                  vm:
+                      (7*x+y) < days.length
+                          ? days[7*x+y]
+                          : null,
+                ),
+            ],
+          ),
+      ],
+    ),
+  );
+}
+
 class DayHabitWidget extends StatelessWidget {
-  const DayHabitWidget({super.key});
+  final IDayHabitViewModel? vm;
+  final double size;
+  const DayHabitWidget({this.vm, this.size = 10, super.key});
 
   @override
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.all(2),
     child: Container(
-      height: 10,
-      width: 10,
+      height: size,
+      width: size,
       decoration: BoxDecoration(
-        color: Colors.amberAccent,
+        color: vm != null ? Colors.amberAccent : Colors.blue,
         borderRadius: BorderRadius.circular(2),
       ),
     ),
