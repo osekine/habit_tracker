@@ -32,11 +32,13 @@ extension GetItInjectableX on _i174.GetIt {
       final i = _i47.HabitsRepository();
       return i.init().then((_) => i);
     }, preResolve: true);
-    gh.lazySingleton<_i33.IYearHabitViewModelFactory>(
-      () => _i1001.YearHabitViewModelFactory(),
-    );
     gh.factory<_i94.IEditPageViewModel>(
       () => _i1011.EditPageViewModel(repository: gh<_i458.IHabitsRepository>()),
+    );
+    gh.lazySingleton<_i33.IYearHabitViewModelFactory>(
+      () => _i1001.YearHabitViewModelFactory(
+        habitsRepository: gh<_i458.IHabitsRepository>(),
+      ),
     );
     gh.factory<_i956.IHomePageViewModel>(
       () => _i682.HomePageViewModel(

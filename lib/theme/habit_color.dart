@@ -8,6 +8,7 @@ class HabitColor {
   final Color _strong;
   Color get baseColor => _standart;
   Color get color => _calculateColor();
+  Color get inactiveColor => _light.withAlpha(40);
   double _progress = 1;
 
   HabitColor({
@@ -19,7 +20,7 @@ class HabitColor {
        _strong = strong;
 
   Color _calculateColor() {
-    _progress = _progress.clamp(0, 2);
+    _progress = _progress.clamp(0, 1) * 2;
     return _progress <= 1
         ? Color.lerp(_light, _standart, _progress)!
         : Color.lerp(_standart, _strong, _progress - 1)!;

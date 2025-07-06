@@ -8,4 +8,5 @@ abstract interface class IYearHabitViewModel {
   List<IDayHabitViewModel> get days;
   IDayHabitViewModel get today;
   HabitColor get baseColor;
+  Future<void> saveChanges();
 }

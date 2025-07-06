@@ -37,5 +37,15 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     ),
+    floatingActionButton:
+        widget.vm.habits.isEmpty
+            ? null
+            : FloatingActionButton(
+              onPressed: () async {
+                await widget.vm.archiveHabits();
+                setState(() {});
+              },
+              child: const Icon(Icons.delete),
+            ),
   );
 }

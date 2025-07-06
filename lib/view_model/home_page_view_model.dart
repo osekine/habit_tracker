@@ -32,4 +32,10 @@ class HomePageViewModel implements IHomePageViewModel {
             .map(_habitViewModelFactory.create)
             .toList();
   }
+
+  @override
+  Future<void> archiveHabits() async{
+    await _repository.archiveHabits();
+    load();
+  }
 }

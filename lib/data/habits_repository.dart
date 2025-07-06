@@ -49,4 +49,10 @@ class HabitsRepository implements IHabitsRepository {
       print('ERROR:::$e');
     }
   }
+
+  @override
+  Future<void> archiveHabits() async{
+    // TODO(NLU): now deleting, need archive
+    await storage.setStringList(habitsKey, []);
+  }
 }

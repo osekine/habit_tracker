@@ -40,10 +40,10 @@ class _YearActivityWidgetState extends State<YearActivityWidget> {
 
   Widget _dayWidgetBuilder(int dayCount) {
     final isDayActive = dayCount < days.length;
-    final inactiveColor = baseColor..lerpColor(0);
+    final inactiveColor = baseColor.inactiveColor;
 
     return isDayActive
         ? DayHabitWidget(vm: days[dayCount])
-        : EmptyDayWidget(color: inactiveColor.color.withAlpha(40));
+        : EmptyDayWidget(color: inactiveColor);
   }
 }
