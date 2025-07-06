@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:habit_tracker/data/i_habits_repository.dart';
-import 'package:habit_tracker/domain/habit.dart';
+import 'package:habit_tracker/domain/domain.dart';
 import 'package:habit_tracker/view_model/i_edit_page_view_model.dart';
 import 'package:injectable/injectable.dart';
 
@@ -21,7 +21,7 @@ class EditPageViewModel implements IEditPageViewModel {
         name: name,
         description: description,
         colorName: colorName,
-        days: [],
+        days: [DailyProgress(day: DateTime.now(), progress: 0)],
         isActive: true,
       ),
     );

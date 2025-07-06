@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:habit_tracker/theme/habit_color.dart';
 import 'package:habit_tracker/view/features/home/day_habit_widget.dart';
+import 'package:habit_tracker/view/features/home/empty_day_widget.dart';
 import 'package:habit_tracker/view_model/view_model.dart';
 
 class YearActivityWidget extends StatefulWidget {
@@ -41,12 +42,8 @@ class _YearActivityWidgetState extends State<YearActivityWidget> {
     final isDayActive = dayCount < days.length;
     final inactiveColor = baseColor..lerpColor(0);
 
-    return DayHabitWidget(
-      vm: isDayActive ? days[dayCount] : null,
-      color:
-          isDayActive
-              ? days[dayCount].color
-              : inactiveColor.color,
-    );
+    return isDayActive
+        ? DayHabitWidget(vm: days[dayCount])
+        : EmptyDayWidget(color: inactiveColor.color.withAlpha(40));
   }
 }

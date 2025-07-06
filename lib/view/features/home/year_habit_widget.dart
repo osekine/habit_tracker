@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:habit_tracker/view/features/home/progress_button.dart';
 import 'package:habit_tracker/view/features/home/year_activity_widget.dart';
 import 'package:habit_tracker/view/widgets/dumb_button.dart';
 import 'package:habit_tracker/view_model/view_model.dart';
@@ -34,7 +35,7 @@ class YearHabitWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                const DumbButton(),
+                ProgressButton(vm: vm.days[0]),
               ],
             ),
             const SizedBox(height: 8),

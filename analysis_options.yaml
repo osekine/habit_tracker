@@ -315,7 +315,7 @@ analyzer:
     null_check_on_nullable_type_parameter: error
     null_closures: error
     omit_local_variable_types: error
-    one_member_abstracts: error
+    one_member_abstracts: ignore
     only_throw_errors: error
     overridden_fields: error
     package_prefixed_library_names: error
