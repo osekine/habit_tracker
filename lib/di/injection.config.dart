@@ -23,12 +23,15 @@ import '../view_model/i_home_page_view_model.dart' as _i956;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
-  _i174.GetIt init({
+  Future<_i174.GetIt> init({
     String? environment,
     _i526.EnvironmentFilter? environmentFilter,
-  }) {
+  }) async {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
-    gh.lazySingleton<_i458.IHabitsRepository>(() => _i47.HabitsRepository());
+    await gh.lazySingletonAsync<_i458.IHabitsRepository>(() {
+      final i = _i47.HabitsRepository();
+      return i.init().then((_) => i);
+    }, preResolve: true);
     gh.lazySingleton<_i33.IYearHabitViewModelFactory>(
       () => _i1001.YearHabitViewModelFactory(),
     );
@@ -39,7 +42,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i682.HomePageViewModel(
         repository: gh<_i458.IHabitsRepository>(),
         habitViewModelFactory: gh<_i33.IYearHabitViewModelFactory>(),
-      ),
+      )..init(),
     );
     return this;
   }

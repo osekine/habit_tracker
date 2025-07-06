@@ -19,12 +19,13 @@ class HomePageViewModel implements IHomePageViewModel {
   }) : _repository = repository,
        _habitViewModelFactory = habitViewModelFactory;
 
-  @override
+  @postConstruct
   void init() {
-    _load();
+    load();
   }
 
-  void _load() {
+  @override
+  void load() {
     final loadedData = _repository.loadHabits();
     _habits =
         loadedData

@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
           onTap: () async {
             // TODO(NLU): change to GoRouter
             await Navigator.of(context).pushNamed('/edit');
-            widget.vm.init();
+            widget.vm.load();
             // TODO(NLU): fix
             setState(() {});
           },

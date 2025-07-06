@@ -47,7 +47,7 @@ class DayHabitViewModel implements IDayHabitViewModel {
 
   void _init() {
     _count.addListener(() {
-      final progress = _count.value / treshold;
+      final progress = (_count.value / treshold) * 1;
       _isDone.value = _count.value >= treshold;
       _habitColor.lerpColor(progress);
     });

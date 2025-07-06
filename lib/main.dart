@@ -4,8 +4,10 @@ import 'package:habit_tracker/view/features/edit/edit_page.dart';
 import 'package:habit_tracker/view/features/home/home_page.dart';
 import 'package:habit_tracker/view_model/view_model.dart';
 
-void main() {
-  configureDependencies();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await configureDependencies();
+
   runApp(const HabitTrackerApp());
 }
 

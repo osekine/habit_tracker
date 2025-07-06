@@ -11,6 +11,7 @@ part of 'daily_progress.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
+
 /// @nodoc
 mixin _$DailyProgress {
 
@@ -21,6 +22,8 @@ mixin _$DailyProgress {
 @pragma('vm:prefer-inline')
 $DailyProgressCopyWith<DailyProgress> get copyWith => _$DailyProgressCopyWithImpl<DailyProgress>(this as DailyProgress, _$identity);
 
+  /// Serializes this DailyProgress to a JSON map.
+  Map<String, dynamic> toJson();
 
 
 @override
@@ -28,7 +31,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is DailyProgress&&(identical(other.day, day) || other.day == day)&&(identical(other.progress, progress) || other.progress == progress));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,day,progress);
 
@@ -204,11 +207,11 @@ return $default(_that.day,_that.progress);case _:
 }
 
 /// @nodoc
-
+@JsonSerializable()
 
 class _DailyProgress implements DailyProgress {
   const _DailyProgress({required this.day, required this.progress});
-  
+  factory _DailyProgress.fromJson(Map<String, dynamic> json) => _$DailyProgressFromJson(json);
 
 @override final  DateTime day;
 @override final  int progress;
@@ -219,14 +222,17 @@ class _DailyProgress implements DailyProgress {
 @pragma('vm:prefer-inline')
 _$DailyProgressCopyWith<_DailyProgress> get copyWith => __$DailyProgressCopyWithImpl<_DailyProgress>(this, _$identity);
 
-
+@override
+Map<String, dynamic> toJson() {
+  return _$DailyProgressToJson(this, );
+}
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _DailyProgress&&(identical(other.day, day) || other.day == day)&&(identical(other.progress, progress) || other.progress == progress));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,day,progress);
 

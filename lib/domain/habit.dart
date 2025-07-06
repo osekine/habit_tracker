@@ -4,22 +4,18 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:habit_tracker/domain/daily_progress.dart';
 
 part 'habit.freezed.dart';
+part 'habit.g.dart';
 
 @freezed
-class Habit with _$Habit {
-  final int id;
-  final String name;
-  final String? description;
-  final String colorName;
-  final List<DailyProgress> days;
-  final bool isActive;
+abstract class Habit with _$Habit {
+  const factory Habit({
+    required int id,
+    required String name,
+    required String? description,
+    required String colorName,
+    required List<DailyProgress> days,
+    required bool isActive,
+  }) = _Habit;
 
-  const Habit({
-    required this.id,
-    required this.name,
-    required this.description,
-    required this.colorName,
-    required this.days,
-    required this.isActive,
-  });
+  factory Habit.fromJson(Map<String, dynamic> json) => _$HabitFromJson(json);
 }
