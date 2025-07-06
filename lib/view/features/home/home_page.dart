@@ -12,7 +12,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
@@ -23,8 +22,7 @@ class _HomePageState extends State<HomePage> {
             await Navigator.of(context).pushNamed('/edit');
             widget.vm.init();
             // TODO(NLU): fix
-            setState(() {
-            });
+            setState(() {});
           },
           icon: Icons.edit,
         ),

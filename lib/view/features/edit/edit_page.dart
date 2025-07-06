@@ -13,8 +13,9 @@ class EditPage extends StatefulWidget {
 }
 
 class _EditPageState extends State<EditPage> {
-  final _nameController = TextEditingController();
-  final _descController = TextEditingController();
+  // TODO(NLU): delete Lorem Ipsum
+  final _nameController = TextEditingController(text: 'Lorem');
+  final _descController = TextEditingController(text: 'Ipsum');
   final _nameFocusNode = FocusNode();
   final _descFocusNode = FocusNode();
   late String colorName;
@@ -26,6 +27,10 @@ class _EditPageState extends State<EditPage> {
       actions: [
         HabitIconButton(
           onTap: () {
+            if (_nameController.text.isEmpty) {
+              _nameFocusNode.requestFocus();
+              return;
+            }
             widget.vm.saveHabit(
               _nameController.text,
               _descController.text,
@@ -54,6 +59,7 @@ class _EditPageState extends State<EditPage> {
               controller: _nameController,
               hint: 'Name',
               focusNode: _nameFocusNode,
+              isNeccessary: true,
             ),
             HabitTextField(
               controller: _descController,
