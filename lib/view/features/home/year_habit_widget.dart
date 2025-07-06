@@ -38,7 +38,7 @@ class YearHabitWidget extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 8),
-            YearActivityWidget(days: vm.days),
+            YearActivityWidget(vm: vm),
           ],
         ),
       ),

@@ -27,7 +27,7 @@ class HomePageViewModel implements IHomePageViewModel {
         loadedData
             .map(
               (habit) => YearHabitViewModel(
-                baseColor: ColorCollection.habits[habit.colorName]!.baseColor,
+                baseColor: ColorCollection.habits[habit.colorName]!,
                 days: [],
                 name: habit.name,
                 description: habit.description,

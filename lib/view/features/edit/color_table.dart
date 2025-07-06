@@ -3,7 +3,8 @@ import 'package:habit_tracker/theme/habit_colors.dart';
 import 'package:habit_tracker/view/features/edit/color_cell.dart';
 
 class ColorTable extends StatefulWidget {
-  const ColorTable({super.key});
+  final void Function(String)? onColorChangeCallback;
+  const ColorTable({super.key, this.onColorChangeCallback});
 
   @override
   State<ColorTable> createState() => _ColorTableState();
@@ -11,6 +12,14 @@ class ColorTable extends StatefulWidget {
 
 class _ColorTableState extends State<ColorTable> {
   final _colorIndex = ValueNotifier<int>(0);
+
+  @override
+  void initState() {
+    super.initState();
+
+    _onChangeColor();
+    _colorIndex.addListener(_onChangeColor);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,5 +62,13 @@ class _ColorTableState extends State<ColorTable> {
             ],
           ),
     );
+  }
+
+  void _onChangeColor() {
+    final onColorChange = widget.onColorChangeCallback ?? (_) {};
+
+    final newColorName =
+        ColorCollection.habits.keys.toList()[_colorIndex.value];
+    onColorChange(newColorName);
   }
 }

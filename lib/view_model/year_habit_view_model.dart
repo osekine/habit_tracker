@@ -1,11 +1,10 @@
-import 'dart:ui';
-
+import 'package:habit_tracker/theme/habit_color.dart';
 import 'package:habit_tracker/view_model/i_day_habit_view_model.dart';
 import 'package:habit_tracker/view_model/i_year_habit_view_model.dart';
 
 class YearHabitViewModel implements IYearHabitViewModel {
   @override
-  final Color baseColor;
+  final HabitColor baseColor;
 
   @override
   final List<IDayHabitViewModel> days;

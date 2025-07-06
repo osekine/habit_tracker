@@ -17,7 +17,7 @@ class _EditPageState extends State<EditPage> {
   final _descController = TextEditingController();
   final _nameFocusNode = FocusNode();
   final _descFocusNode = FocusNode();
-  
+  late String colorName;
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -25,16 +25,14 @@ class _EditPageState extends State<EditPage> {
       leading: HabitIconButton(onTap: () {}, icon: Icons.close),
       actions: [
         HabitIconButton(
-          onTap:
-              () {
-                widget.vm.saveHabit(
-                _nameController.text,
-                _descController.text,
-                // TODO(NLU): fix
-                'yellow',
-              );
-              Navigator.of(context).pop();
-              },
+          onTap: () {
+            widget.vm.saveHabit(
+              _nameController.text,
+              _descController.text,
+              colorName,
+            );
+            Navigator.of(context).pop();
+          },
           icon: Icons.check,
         ),
       ],
@@ -63,7 +61,9 @@ class _EditPageState extends State<EditPage> {
               focusNode: _descFocusNode,
             ),
             const SizedBox(height: 4),
-            const RepaintBoundary(child: ColorTable()),
+            RepaintBoundary(
+              child: ColorTable(onColorChangeCallback: _changeColor),
+            ),
           ],
         ),
       ),
@@ -77,5 +77,10 @@ class _EditPageState extends State<EditPage> {
     _descController.dispose();
     _descFocusNode.dispose();
     super.dispose();
+  }
+
+  // ignore: use_setters_to_change_properties
+  void _changeColor(String newColorName) {
+    colorName = newColorName;
   }
 }

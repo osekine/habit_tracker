@@ -4,7 +4,14 @@ import 'package:habit_tracker/view_model/view_model.dart';
 class DayHabitWidget extends StatelessWidget {
   final IDayHabitViewModel? vm;
   final double size;
-  const DayHabitWidget({this.vm, this.size = 10, super.key});
+  final Color color;
+  
+  const DayHabitWidget({
+    required this.color,
+    this.vm,
+    this.size = 10,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -13,7 +20,7 @@ class DayHabitWidget extends StatelessWidget {
       height: size,
       width: size,
       decoration: BoxDecoration(
-        color: vm != null ? Colors.amberAccent : Colors.blue,
+        color: color,
         borderRadius: BorderRadius.circular(2),
       ),
     ),
