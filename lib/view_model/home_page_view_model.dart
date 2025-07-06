@@ -1,17 +1,18 @@
+import 'package:flutter/foundation.dart';
 import 'package:habit_tracker/data/i_habits_repository.dart';
 import 'package:habit_tracker/view_model/factories/i_year_habit_view_model_factory.dart';
 import 'package:habit_tracker/view_model/i_home_page_view_model.dart';
 import 'package:habit_tracker/view_model/i_year_habit_view_model.dart';
 import 'package:injectable/injectable.dart';
 
-@Injectable(as: IHomePageViewModel)
+@LazySingleton(as: IHomePageViewModel)
 class HomePageViewModel implements IHomePageViewModel {
   final IYearHabitViewModelFactory _habitViewModelFactory;
   final IHabitsRepository _repository;
-  List<IYearHabitViewModel> _habits = [];
+  final _habits = ValueNotifier<List<IYearHabitViewModel>>([]);
 
   @override
-  List<IYearHabitViewModel> get habits => _habits;
+  ValueListenable<List<IYearHabitViewModel>> get habits => _habits;
 
   HomePageViewModel({
     required IHabitsRepository repository,
@@ -27,7 +28,7 @@ class HomePageViewModel implements IHomePageViewModel {
   @override
   void load() {
     final loadedData = _repository.loadHabits();
-    _habits =
+    _habits.value =
         loadedData
             .map(_habitViewModelFactory.create)
             .toList();

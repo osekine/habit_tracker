@@ -35,7 +35,7 @@ class YearHabitWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                ProgressButton(vm: vm.days[0]),
+                ProgressButton(vm: vm.today),
               ],
             ),
             const SizedBox(height: 8),

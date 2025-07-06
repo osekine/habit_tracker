@@ -19,10 +19,7 @@ class _HomePageState extends State<HomePage> {
         HabitIconButton(
           onTap: () async {
             // TODO(NLU): change to GoRouter
-            await Navigator.of(context).pushNamed('/edit');
-            widget.vm.load();
-            // TODO(NLU): fix
-            setState(() {});
+            await Navigator.of(context).pushReplacementNamed('/edit');
           },
           icon: Icons.edit,
         ),
@@ -30,15 +27,19 @@ class _HomePageState extends State<HomePage> {
     ),
     body: SingleChildScrollView(
       child: Center(
-        child: Column(
-          children: [
-            for (final habit in widget.vm.habits) YearHabitWidget(vm: habit),
-          ],
+        child: ValueListenableBuilder(
+          valueListenable: widget.vm.habits,
+          builder:
+              (_, habits, __) => Column(
+                children: [
+                  for (final habit in habits) YearHabitWidget(vm: habit),
+                ],
+              ),
         ),
       ),
     ),
     floatingActionButton:
-        widget.vm.habits.isEmpty
+        widget.vm.habits.value.isEmpty
             ? null
             : FloatingActionButton(
               onPressed: () async {

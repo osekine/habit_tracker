@@ -23,10 +23,15 @@ class _EditPageState extends State<EditPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
-      leading: HabitIconButton(onTap: () {}, icon: Icons.close),
+      leading: HabitIconButton(
+        onTap: () async {
+          await Navigator.of(context).pushReplacementNamed('/home');
+        },
+        icon: Icons.close,
+      ),
       actions: [
         HabitIconButton(
-          onTap: () {
+          onTap: () async {
             if (_nameController.text.isEmpty) {
               _nameFocusNode.requestFocus();
               return;
@@ -36,7 +41,7 @@ class _EditPageState extends State<EditPage> {
               _descController.text,
               colorName,
             );
-            Navigator.of(context).pop();
+            await Navigator.of(context).pushReplacementNamed('/home');
           },
           icon: Icons.check,
         ),
