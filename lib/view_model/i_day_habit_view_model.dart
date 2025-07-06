@@ -8,6 +8,6 @@ abstract interface class IDayHabitViewModel {
   int get treshold;
   bool get isStrict;
   Color get color;
-  bool get isDone;
+  ValueListenable<bool> get isDone;
   void add([int value]);
 }

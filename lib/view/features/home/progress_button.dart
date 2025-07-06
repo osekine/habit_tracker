@@ -13,9 +13,17 @@ class ProgressButton extends StatefulWidget {
 
 class _ProgressButtonState extends State<ProgressButton> {
   @override
-  Widget build(BuildContext context) => HabitIconButton(
-    backgroundColor: widget.vm.color,
-    onTap: widget.vm.add,
-    icon: widget.vm.isDone ? Icons.check : Icons.add,
+  Widget build(BuildContext context) => ValueListenableBuilder(
+    valueListenable: widget.vm.isDone,
+    builder:
+    // TODO(NLU): add animation
+        (_, isDone, __) => SizedBox.square(
+          dimension: 32,
+          child: HabitIconButton(
+            backgroundColor: widget.vm.color,
+            onTap: widget.vm.add,
+            icon: widget.vm.treshold == 1 ? Icons.check : Icons.add,
+          ),
+        ),
   );
 }
