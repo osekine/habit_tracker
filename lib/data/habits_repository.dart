@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:habit_tracker/data/i_habits_repository.dart';
+import 'package:habit_tracker/domain/domain.dart';
 import 'package:habit_tracker/domain/habit.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 @LazySingleton(as: IHabitsRepository)
 class HabitsRepository implements IHabitsRepository {
   final habitsKey = 'habits';
+  final dateKey = 'date';
   late final SharedPreferences storage;
   Map<int, Habit> habits = {};
 
@@ -19,11 +21,11 @@ class HabitsRepository implements IHabitsRepository {
   @PostConstruct(preResolve: true)
   Future<void> init() async {
     storage = await SharedPreferences.getInstance();
-    loadHabits();
+    await loadHabits();
   }
 
   @override
-  List<Habit> loadHabits() {
+  Future<List<Habit>> loadHabits() async {
     final data = storage.getStringList(habitsKey);
     print('${data?.length}');
     final habitsList =
@@ -33,12 +35,13 @@ class HabitsRepository implements IHabitsRepository {
         [];
     if (habitsList.isEmpty) print('~~~EMPTY LIST~~~~');
     habits = {for (final habit in habitsList) habit.id: habit};
+    await _checkDate();
     return habits.values.toList();
   }
 
   @override
-  Future<void> saveHabits(Habit newHabit) async {
-    habits[newHabit.id] = newHabit;
+  Future<void> saveHabits([Habit? newHabit]) async {
+    if (newHabit != null) habits[newHabit.id] = newHabit;
     try {
       await storage.setStringList(
         habitsKey,
@@ -51,8 +54,36 @@ class HabitsRepository implements IHabitsRepository {
   }
 
   @override
-  Future<void> archiveHabits() async{
+  Future<void> archiveHabits() async {
     // TODO(NLU): now deleting, need archive
     await storage.setStringList(habitsKey, []);
+  }
+
+  Future<void> _checkDate() async {
+    final savedDate = storage.getString(dateKey);
+    if (savedDate == null) {
+      await storage.setString(dateKey, DateTime.now().toIso8601String());
+      return;
+    }
+
+    final today = DateTime.now();
+    var lastDate = DateTime.parse(savedDate);
+
+    while (today.day > lastDate.day ||
+        today.month > lastDate.month ||
+        today.year > lastDate.year) {
+      lastDate = lastDate.add(const Duration(days: 1));
+      habits = habits.map(
+        (key, habit) => MapEntry(
+          key,
+          habit.copyWith(
+            days: [DailyProgress(day: lastDate, progress: 0), ...habit.days],
+          ),
+        ),
+      );
+    }
+
+    await storage.setString(dateKey, DateTime.now().toIso8601String());
+    await saveHabits();
   }
 }

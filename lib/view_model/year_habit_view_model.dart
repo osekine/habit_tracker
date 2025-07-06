@@ -31,14 +31,14 @@ class YearHabitViewModel implements IYearHabitViewModel {
   }) : _habitsRepository = habitsRepository,
        _habit = habit {
     baseColor =
-      // TODO(NLU): change that cringe
-        HabitColor.fromHabitColor(ColorCollection.habits[habit.colorName]!);
+    // TODO(NLU): change that cringe
+    HabitColor.fromHabitColor(ColorCollection.habits[habit.colorName]!);
     days =
         habit.days
             .map(
               (dailyProgress) => DayHabitViewModel(
                 day: dailyProgress.day,
-                habitColor: baseColor,
+                habitColor: HabitColor.fromHabitColor(baseColor),
                 count: dailyProgress.progress,
                 save: saveChanges,
               ),

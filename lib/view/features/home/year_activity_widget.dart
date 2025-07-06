@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:habit_tracker/theme/habit_color.dart';
 import 'package:habit_tracker/view/features/home/day_habit_widget.dart';
@@ -14,12 +13,21 @@ class YearActivityWidget extends StatefulWidget {
 }
 
 class _YearActivityWidgetState extends State<YearActivityWidget> {
-  late final List<IDayHabitViewModel> days;
-  late final HabitColor baseColor;
+  late List<IDayHabitViewModel> days;
+  late HabitColor baseColor;
 
   @override
   void initState() {
     super.initState();
+
+    days = widget.vm.days;
+    baseColor = widget.vm.baseColor;
+  }
+
+  @override
+  void didUpdateWidget(covariant YearActivityWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
     days = widget.vm.days;
     baseColor = widget.vm.baseColor;
   }
@@ -43,6 +51,10 @@ class _YearActivityWidgetState extends State<YearActivityWidget> {
   Widget _dayWidgetBuilder(int dayCount) {
     final isDayActive = dayCount < days.length;
     final inactiveColor = baseColor.inactiveColor;
+    if (isDayActive) {
+      // ignore: avoid_print
+      print('dayActive');
+    }
 
     return isDayActive
         ? DayHabitWidget(vm: days[dayCount])

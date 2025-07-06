@@ -20,23 +20,20 @@ class HomePageViewModel implements IHomePageViewModel {
   }) : _repository = repository,
        _habitViewModelFactory = habitViewModelFactory;
 
-  @postConstruct
-  void init() {
-    load();
+  @PostConstruct(preResolve: true)
+  Future<void> init() async {
+    await load();
   }
 
   @override
-  void load() {
-    final loadedData = _repository.loadHabits();
-    _habits.value =
-        loadedData
-            .map(_habitViewModelFactory.create)
-            .toList();
+  Future<void> load() async {
+    final loadedData = await _repository.loadHabits();
+    _habits.value = loadedData.map(_habitViewModelFactory.create).toList();
   }
 
   @override
-  Future<void> archiveHabits() async{
+  Future<void> archiveHabits() async {
     await _repository.archiveHabits();
-    load();
+    await load();
   }
 }

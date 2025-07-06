@@ -13,40 +13,44 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      actions: [
-        HabitIconButton(
-          onTap: () async {
-            // TODO(NLU): change to GoRouter
-            await Navigator.of(context).pushReplacementNamed('/edit');
-          },
-          icon: Icons.edit,
-        ),
-      ],
-    ),
-    body: SingleChildScrollView(
-      child: Center(
-        child: ValueListenableBuilder(
-          valueListenable: widget.vm.habits,
-          builder:
-              (_, habits, __) => Column(
-                children: [
-                  for (final habit in habits) YearHabitWidget(vm: habit),
-                ],
+  Widget build(BuildContext context) => ValueListenableBuilder(
+    valueListenable: widget.vm.habits,
+    builder:
+        (_, habits, __) => Scaffold(
+          appBar: AppBar(
+            actions: [
+              HabitIconButton(
+                onTap: () async {
+                  // TODO(NLU): change to GoRouter
+                  await Navigator.of(context).pushReplacementNamed('/edit');
+                },
+                icon: Icons.edit,
               ),
-        ),
-      ),
-    ),
-    floatingActionButton:
-        widget.vm.habits.value.isEmpty
-            ? null
-            : FloatingActionButton(
-              onPressed: () async {
-                await widget.vm.archiveHabits();
-                setState(() {});
-              },
-              child: const Icon(Icons.delete),
+            ],
+          ),
+          body: RefreshIndicator(
+            onRefresh: widget.vm.load,
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Center(
+                child: Column(
+                  children: [
+                    for (final habit in habits) YearHabitWidget(vm: habit),
+                  ],
+                ),
+              ),
             ),
+          ),
+          floatingActionButton:
+              widget.vm.habits.value.isEmpty
+                  ? null
+                  : FloatingActionButton(
+                    onPressed: () async {
+                      await widget.vm.archiveHabits();
+                      setState(() {});
+                    },
+                    child: const Icon(Icons.delete),
+                  ),
+        ),
   );
 }
