@@ -26,7 +26,9 @@ class _HabitTextFieldState extends State<HabitTextField> {
 
   @override
   Widget build(BuildContext context) {
+    const shadowColor = Colors.black38;
     final labelText = widget.hint;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Column(
@@ -39,8 +41,11 @@ class _HabitTextFieldState extends State<HabitTextField> {
           DecoratedBox(
             decoration: BoxDecoration(
               color: Colors.white,
+              border: Border.all(color: shadowColor),
               borderRadius: BorderRadius.circular(16),
-              boxShadow: const [BoxShadow(offset: Offset(0, 5), blurRadius: 5)],
+              boxShadow: const [
+                BoxShadow(offset: Offset(0, 2), color: shadowColor),
+              ],
             ),
             child: Padding(
               padding: const EdgeInsets.fromLTRB(12, 8, 16, 8),
