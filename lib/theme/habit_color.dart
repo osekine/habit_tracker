@@ -15,9 +15,11 @@ class HabitColor {
     required Color light,
     required Color standart,
     required Color strong,
+    double progress = 1,
   }) : _light = light,
        _standart = standart,
-       _strong = strong;
+       _strong = strong,
+       _progress = progress;
 
   Color _calculateColor() {
     _progress = _progress.clamp(0, 1) * 2;
@@ -30,4 +32,11 @@ class HabitColor {
   void lerpColor(double value) {
     _progress = value;
   }
+
+  factory HabitColor.fromHabitColor(HabitColor other) => HabitColor(
+    light: other._light,
+    standart: other._standart,
+    strong: other._strong,
+    progress: other._progress,
+  );
 }

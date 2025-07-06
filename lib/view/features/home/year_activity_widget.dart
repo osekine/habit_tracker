@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:habit_tracker/theme/habit_color.dart';
 import 'package:habit_tracker/view/features/home/day_habit_widget.dart';
@@ -25,6 +26,7 @@ class _YearActivityWidgetState extends State<YearActivityWidget> {
 
   @override
   Widget build(BuildContext context) => SingleChildScrollView(
+    reverse: true,
     scrollDirection: Axis.horizontal,
     child: Row(
       children: [
@@ -45,5 +47,10 @@ class _YearActivityWidgetState extends State<YearActivityWidget> {
     return isDayActive
         ? DayHabitWidget(vm: days[dayCount])
         : EmptyDayWidget(color: inactiveColor);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }

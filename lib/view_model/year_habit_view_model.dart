@@ -30,7 +30,9 @@ class YearHabitViewModel implements IYearHabitViewModel {
     required IHabitsRepository habitsRepository,
   }) : _habitsRepository = habitsRepository,
        _habit = habit {
-    baseColor = ColorCollection.habits[habit.colorName]!;
+    baseColor =
+      // TODO(NLU): change that cringe
+        HabitColor.fromHabitColor(ColorCollection.habits[habit.colorName]!);
     days =
         habit.days
             .map(
