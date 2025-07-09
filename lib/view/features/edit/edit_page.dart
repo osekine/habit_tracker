@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:habit_tracker/theme/habit_colors.dart';
 import 'package:habit_tracker/view/features/edit/color_table.dart';
+import 'package:habit_tracker/view/features/edit/edit_page_header.dart';
 import 'package:habit_tracker/view/widgets/habit_icon_button.dart';
 import 'package:habit_tracker/view/widgets/habit_text_field.dart';
 import 'package:habit_tracker/view_model/view_model.dart';
@@ -13,71 +17,78 @@ class EditPage extends StatefulWidget {
 }
 
 class _EditPageState extends State<EditPage> {
-  // TODO(NLU): delete Lorem Ipsum
-  final _nameController = TextEditingController(text: 'Lorem');
-  final _descController = TextEditingController(text: 'Ipsum');
+  final _nameController = TextEditingController();
+  final _descController = TextEditingController();
   final _nameFocusNode = FocusNode();
   final _descFocusNode = FocusNode();
   late String colorName;
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      leading: HabitIconButton(
-        onTap: () async {
-          await Navigator.of(context).pushReplacementNamed('/home');
-        },
-        icon: Icons.close,
-      ),
-      actions: [
-        HabitIconButton(
-          onTap: () async {
-            if (_nameController.text.isEmpty) {
-              _nameFocusNode.requestFocus();
-              return;
-            }
-            widget.vm.saveHabit(
-              _nameController.text,
-              _descController.text,
-              colorName,
-            );
-            await Navigator.of(context).pushReplacementNamed('/home');
-          },
-          icon: Icons.check,
-        ),
-      ],
+    backgroundColor: ColorCollection.monocrome['white']!.baseColor.withAlpha(
+      255,
     ),
-    body: SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            const SizedBox(
-              width: double.infinity,
-              height: 250,
-              child: ColoredBox(
-                color: Colors.black45,
-                child: Center(child: Text('Choose your icon')),
+    body: CustomScrollView(
+      slivers: [
+        SliverPersistentHeader(
+          pinned: true,
+          delegate: EditPageHeader(
+            minExtent: 50,
+            maxExtent: 70,
+            vm: widget.vm,
+            onApplyTap: () async {
+              if (_nameController.text.isEmpty) {
+                _nameFocusNode.requestFocus();
+                return;
+              }
+              widget.vm.saveHabit(
+                _nameController.text,
+                _descController.text,
+                colorName,
+              );
+              await Navigator.of(context).pushReplacementNamed('/home');
+            },
+            onCrossTap: () async {
+              await Navigator.of(context).pushReplacementNamed('/home');
+            },
+          ),
+        ),
+        SliverList(
+          delegate: SliverChildListDelegate([
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(
+                    width: double.infinity,
+                    height: 250,
+                    child: ColoredBox(
+                      color: Colors.black45,
+                      child: Center(child: Text('Choose your icon')),
+                    ),
+                  ),
+                  HabitTextField(
+                    controller: _nameController,
+                    hint: 'Name',
+                    focusNode: _nameFocusNode,
+                    isNeccessary: true,
+                  ),
+                  HabitTextField(
+                    controller: _descController,
+                    hint: 'Description',
+                    focusNode: _descFocusNode,
+                  ),
+                  const SizedBox(height: 4),
+                  RepaintBoundary(
+                    child: ColorTable(onColorChangeCallback: _changeColor),
+                  ),
+                ],
               ),
             ),
-            HabitTextField(
-              controller: _nameController,
-              hint: 'Name',
-              focusNode: _nameFocusNode,
-              isNeccessary: true,
-            ),
-            HabitTextField(
-              controller: _descController,
-              hint: 'Description',
-              focusNode: _descFocusNode,
-            ),
-            const SizedBox(height: 4),
-            RepaintBoundary(
-              child: ColorTable(onColorChangeCallback: _changeColor),
-            ),
-          ],
+          ]),
         ),
-      ),
+      ],
     ),
   );
 

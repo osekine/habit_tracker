@@ -149,12 +149,12 @@ abstract final class HabitColors {
 }
 
 abstract final class ColorCollection {
-  static final monocrome = [
-    HabitColors.black,
-    HabitColors.white,
-    HabitColors.gray,
-    HabitColors.anthracite,
-  ];
+  static final monocrome = <String, HabitColor>{
+    'black': HabitColors.black,
+    'white': HabitColors.white,
+    'gray': HabitColors.gray,
+    'anthracite': HabitColors.anthracite,
+  };
 
   static final habits = <String, HabitColor>{
     'blue': HabitColors.blue,

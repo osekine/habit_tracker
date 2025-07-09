@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:habit_tracker/theme/habit_colors.dart';
 
 import 'package:habit_tracker/view/widgets/habit_icon_button.dart';
 import 'package:habit_tracker/view_model/view_model.dart';
@@ -16,13 +17,19 @@ class _ProgressButtonState extends State<ProgressButton> {
   Widget build(BuildContext context) => ValueListenableBuilder(
     valueListenable: widget.vm.isDone,
     builder:
-    // TODO(NLU): add animation
+        // TODO(NLU): add animation
         (_, isDone, __) => SizedBox.square(
-          dimension: 32,
+          dimension: 48,
           child: HabitIconButton(
             backgroundColor: widget.vm.color,
             onTap: widget.vm.add,
-            icon: widget.vm.treshold == 1 ? Icons.check : Icons.add,
+            icon: Icon(
+              widget.vm.treshold == 1 ? Icons.check : Icons.add,
+              color:
+                  isDone
+                      ? ColorCollection.monocrome['white']!.baseColor
+                      : ColorCollection.monocrome['black']!.baseColor,
+            ),
           ),
         ),
   );

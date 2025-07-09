@@ -5,7 +5,6 @@ import 'dart:convert';
 
 import 'package:habit_tracker/data/i_habits_repository.dart';
 import 'package:habit_tracker/domain/domain.dart';
-import 'package:habit_tracker/domain/habit.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

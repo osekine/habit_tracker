@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:habit_tracker/theme/habit_colors.dart';
 
 class HabitIconButton extends StatelessWidget {
   final VoidCallback onTap;
-  final IconData icon;
+  final Icon icon;
   final Color backgroundColor;
   final Widget? child;
+  final double size;
+  final bool needBorder;
 
   const HabitIconButton({
     required this.onTap,
     required this.icon,
     this.child,
     this.backgroundColor = Colors.transparent,
+    this.size = 40,
+    this.needBorder = false,
     super.key,
   });
 
@@ -20,15 +25,15 @@ class HabitIconButton extends StatelessWidget {
     child: DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
+        border:
+            needBorder
+                ? Border.all(
+                  color: ColorCollection.monocrome['gray']!.baseColor,
+                )
+                : null,
         color: backgroundColor,
       ),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          if(child != null) child!,
-          Icon(icon),
-        ],
-      ),
+      child: icon,
     ),
   );
 }
