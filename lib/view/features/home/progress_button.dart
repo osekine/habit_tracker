@@ -21,6 +21,7 @@ class _ProgressButtonState extends State<ProgressButton> {
         (_, isDone, __) => SizedBox.square(
           dimension: 48,
           child: HabitIconButton(
+            needBorder: true,
             backgroundColor: widget.vm.color,
             onTap: widget.vm.add,
             icon: Icon(
