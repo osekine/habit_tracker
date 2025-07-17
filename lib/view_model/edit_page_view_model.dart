@@ -9,6 +9,7 @@ import 'package:injectable/injectable.dart';
 class EditPageViewModel implements IEditPageViewModel {
   final IHabitsRepository _repository;
 
+  // TODO(osekine): add factory param for passing Habit
   EditPageViewModel({required IHabitsRepository repository})
     : _repository = repository;
 

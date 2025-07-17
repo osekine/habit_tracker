@@ -38,6 +38,7 @@ class _HomePageState extends State<HomePage> {
             child: CustomScrollView(
               slivers: [
                 SliverPersistentHeader(
+                  pinned: true,
                   delegate: HomePageHeader(
                     maxExtent: 70,
                     minExtent: 50,
