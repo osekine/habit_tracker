@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:habit_tracker/navigation/router.dart';
 import 'package:habit_tracker/theme/habit_colors.dart';
 import 'package:habit_tracker/view/features/edit/color_table.dart';
 import 'package:habit_tracker/view/features/edit/edit_page_header.dart';
@@ -46,10 +47,10 @@ class _EditPageState extends State<EditPage> {
                 _descController.text,
                 colorName,
               );
-              await Navigator.of(context).pushReplacementNamed('/home');
+              HomeRoute().pushReplacement(context);
             },
             onCrossTap: () async {
-              await Navigator.of(context).pushReplacementNamed('/home');
+              HomeRoute().pushReplacement(context);
             },
           ),
         ),

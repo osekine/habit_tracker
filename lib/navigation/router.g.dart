@@ -6,33 +6,10 @@ part of 'router.dart';
 // GoRouterGenerator
 // **************************************************************************
 
-List<RouteBase> get $appRoutes => [$homeRoute, $editRoute];
-
-RouteBase get $homeRoute =>
-    GoRouteData.$route(path: 'home', factory: _$HomeRoute._fromState);
-
-mixin _$HomeRoute on GoRouteData {
-  static HomeRoute _fromState(GoRouterState state) => HomeRoute();
-
-  @override
-  String get location => GoRouteData.$location('home');
-
-  @override
-  void go(BuildContext context) => context.go(location);
-
-  @override
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  @override
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  @override
-  void replace(BuildContext context) => context.replace(location);
-}
+List<RouteBase> get $appRoutes => [$editRoute, $homeRoute];
 
 RouteBase get $editRoute =>
-    GoRouteData.$route(path: 'edit', factory: _$EditRoute._fromState);
+    GoRouteData.$route(path: '/edit', factory: _$EditRoute._fromState);
 
 mixin _$EditRoute on GoRouteData {
   static EditRoute _fromState(GoRouterState state) =>
@@ -41,7 +18,7 @@ mixin _$EditRoute on GoRouteData {
   EditRoute get _self => this as EditRoute;
 
   @override
-  String get location => GoRouteData.$location('edit');
+  String get location => GoRouteData.$location('/edit');
 
   @override
   void go(BuildContext context) => context.go(location, extra: _self.$extra);
@@ -57,4 +34,27 @@ mixin _$EditRoute on GoRouteData {
   @override
   void replace(BuildContext context) =>
       context.replace(location, extra: _self.$extra);
+}
+
+RouteBase get $homeRoute =>
+    GoRouteData.$route(path: '/', factory: _$HomeRoute._fromState);
+
+mixin _$HomeRoute on GoRouteData {
+  static HomeRoute _fromState(GoRouterState state) => HomeRoute();
+
+  @override
+  String get location => GoRouteData.$location('/');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
 }

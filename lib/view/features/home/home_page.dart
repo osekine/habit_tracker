@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:habit_tracker/navigation/router.dart';
 import 'package:habit_tracker/theme/habit_colors.dart';
 import 'package:habit_tracker/view/features/home/year_habit_widget.dart';
 import 'package:habit_tracker/view/widgets/habit_icon_button.dart';
@@ -43,8 +44,7 @@ class _HomePageState extends State<HomePage> {
                     maxExtent: 70,
                     minExtent: 50,
                     onEditTap:
-                        () async =>
-                            Navigator.of(context).pushReplacementNamed('/edit'),
+                        () async => const EditRoute().push(context),
                   ),
                 ),
                 SliverList(
