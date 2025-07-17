@@ -14,6 +14,9 @@ class YearHabitViewModel implements IYearHabitViewModel {
   late final HabitColor baseColor;
 
   @override
+  int get id => _habit.id;
+
+  @override
   late final List<IDayHabitViewModel> days;
 
   @override
