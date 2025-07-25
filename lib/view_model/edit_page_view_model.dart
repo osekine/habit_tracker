@@ -11,7 +11,7 @@ class EditPageViewModel implements IEditPageViewModel {
   final IHabitsRepository _repository;
   final IYearHabitViewModel? _habit;
 
-  // TODO(osekine): add factory param for passing Habit
+  // TODO(NLU): add factory param for passing Habit
   EditPageViewModel({
     required IHabitsRepository repository,
     @factoryParam IYearHabitViewModel? editableHabit,
