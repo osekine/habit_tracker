@@ -6,6 +6,9 @@ abstract interface class IHabitsRepository {
   Future<List<Habit>> loadHabits();
   Future<void> archiveHabits();
 
+  Future<void> saveCategories(Category newCategory);
+  Future<Set<Category>> loadCategories();
   Set<Category> get activeCategories;
+  
   int get revision;
 }

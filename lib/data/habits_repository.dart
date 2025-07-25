@@ -25,6 +25,7 @@ class HabitsRepository implements IHabitsRepository {
   int _revision = 0;
   Map<int, Habit> habits = {};
   Set<Category> _activeCategories = {};
+  Set<Category> _allCategories = _defaultCategories;
 
   @override
   int get revision => _revision;
@@ -39,7 +40,7 @@ class HabitsRepository implements IHabitsRepository {
     storage = await SharedPreferences.getInstance();
     _revision = storage.getInt(revisionKey) ?? 0;
 
-    await _initCategories();
+    await loadCategories();
     await loadHabits();
   }
 
@@ -54,7 +55,7 @@ class HabitsRepository implements IHabitsRepository {
         [];
     if (habitsList.isEmpty) print('~~~EMPTY LIST~~~~');
     habits = {for (final habit in habitsList) habit.id: habit};
-    
+
     _activeCategories = {
       for (final habit in habitsList)
         for (final cat in habit.categories ?? {}) cat,
@@ -86,6 +87,46 @@ class HabitsRepository implements IHabitsRepository {
     await storage.setStringList(habitsKey, []);
   }
 
+  @override
+  Future<Set<Category>> loadCategories() async {
+    final categoriesList = storage.getStringList(categoriesKey);
+
+    if (categoriesList == null) {
+      await storage.setStringList(
+        categoriesKey,
+        _defaultCategories
+            .map((category) => jsonEncode(category.toJson()))
+            .toList(),
+      );
+    } else {
+      _allCategories =
+          categoriesList
+              .map((json) => Category.fromJson(jsonDecode(json)))
+              .toSet();
+    }
+
+    return _allCategories;
+  }
+
+  @override
+  Future<void> saveCategories([Category? newCategory]) async {
+    if (newCategory != null) _allCategories.add(newCategory);
+
+    try {
+      await storage.setStringList(
+        categoriesKey,
+        _allCategories
+            .map((category) => jsonEncode(category.toJson()))
+            .toList(),
+      );
+
+      await storage.setInt(revisionKey, ++_revision);
+      print('~~~SUCCESS SAVE~~~');
+    } catch (e) {
+      print('ERROR:::$e');
+    }
+  }
+
   Future<void> _checkDate() async {
     final savedDate = storage.getString(dateKey);
     if (savedDate == null) {
@@ -112,19 +153,5 @@ class HabitsRepository implements IHabitsRepository {
 
     await storage.setString(dateKey, DateTime.now().toIso8601String());
     await saveHabits();
-  }
-
-  Future<void> _initCategories() async {
-    final categoriesList = storage.getStringList(categoriesKey);
-
-    if (categoriesList == null) {
-      await storage.setStringList(
-        categoriesKey,
-        _defaultCategories
-            .map((category) => jsonEncode(category.toJson()))
-            .toList(),
-      );
-      return;
-    }
   }
 }
