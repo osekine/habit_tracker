@@ -16,6 +16,10 @@ _Habit _$HabitFromJson(Map<String, dynamic> json) => _Habit(
           .map((e) => DailyProgress.fromJson(e as Map<String, dynamic>))
           .toList(),
   isActive: json['isActive'] as bool,
+  categories:
+      (json['categories'] as List<dynamic>?)
+          ?.map((e) => Category.fromJson(e as Map<String, dynamic>))
+          .toSet(),
 );
 
 Map<String, dynamic> _$HabitToJson(_Habit instance) => <String, dynamic>{
@@ -25,4 +29,5 @@ Map<String, dynamic> _$HabitToJson(_Habit instance) => <String, dynamic>{
   'colorName': instance.colorName,
   'days': instance.days,
   'isActive': instance.isActive,
+  'categories': instance.categories?.toList(),
 };

@@ -9,7 +9,7 @@ part of 'router.dart';
 List<RouteBase> get $appRoutes => [$editRoute, $homeRoute];
 
 RouteBase get $editRoute =>
-    GoRouteData.$route(path: '/edit', factory: _$EditRoute._fromState);
+    GoRouteData.$route(path: 'edit', factory: _$EditRoute._fromState);
 
 mixin _$EditRoute on GoRouteData {
   static EditRoute _fromState(GoRouterState state) =>
@@ -18,7 +18,7 @@ mixin _$EditRoute on GoRouteData {
   EditRoute get _self => this as EditRoute;
 
   @override
-  String get location => GoRouteData.$location('/edit');
+  String get location => GoRouteData.$location('edit');
 
   @override
   void go(BuildContext context) => context.go(location, extra: _self.$extra);
