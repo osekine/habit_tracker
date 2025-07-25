@@ -49,15 +49,14 @@ class _YearActivityWidgetState extends State<YearActivityWidget> {
   );
 
   Widget _dayWidgetBuilder(int dayCount) {
-    final isDayActive = dayCount < days.length;
+    final weekdayOffset = 7 - widget.vm.today.day.weekday;
+    final correctDay = dayCount - weekdayOffset;
+    
+    final isDayActive = correctDay < days.length && correctDay >= 0;
     final inactiveColor = baseColor.inactiveColor;
-    if (isDayActive) {
-      // ignore: avoid_print
-      print('dayActive');
-    }
 
     return isDayActive
-        ? DayHabitWidget(vm: days[dayCount])
+        ? DayHabitWidget(vm: days[correctDay])
         : EmptyDayWidget(color: inactiveColor);
   }
 
