@@ -10,16 +10,27 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 @LazySingleton(as: IHabitsRepository)
 class HabitsRepository implements IHabitsRepository {
+  static final _defaultCategories = <Category>{
+    const Category(name: 'Health', iconName: ''),
+    const Category(name: 'Sport', iconName: ''),
+    const Category(name: 'Wealth', iconName: ''),
+  };
+
   final habitsKey = 'habits';
+  final categoriesKey = 'categories';
   final dateKey = 'date';
   final revisionKey = 'revision';
-  
+
   late final SharedPreferences storage;
   int _revision = 0;
   Map<int, Habit> habits = {};
+  Set<Category> _activeCategories = {};
 
   @override
   int get revision => _revision;
+
+  @override
+  Set<Category> get activeCategories => _activeCategories;
 
   HabitsRepository();
 
@@ -27,6 +38,8 @@ class HabitsRepository implements IHabitsRepository {
   Future<void> init() async {
     storage = await SharedPreferences.getInstance();
     _revision = storage.getInt(revisionKey) ?? 0;
+
+    await _initCategories();
     await loadHabits();
   }
 
@@ -41,6 +54,12 @@ class HabitsRepository implements IHabitsRepository {
         [];
     if (habitsList.isEmpty) print('~~~EMPTY LIST~~~~');
     habits = {for (final habit in habitsList) habit.id: habit};
+    
+    _activeCategories = {
+      for (final habit in habitsList)
+        for (final cat in habit.categories ?? {}) cat,
+    };
+
     await _checkDate();
     return habits.values.toList();
   }
@@ -53,11 +72,8 @@ class HabitsRepository implements IHabitsRepository {
         habitsKey,
         habits.values.map((habit) => jsonEncode(habit.toJson())).toList(),
       );
-      
-      await storage.setInt(
-        revisionKey,
-        ++_revision,
-      );
+
+      await storage.setInt(revisionKey, ++_revision);
       print('~~~SUCCESS SAVE~~~');
     } catch (e) {
       print('ERROR:::$e');
@@ -96,5 +112,19 @@ class HabitsRepository implements IHabitsRepository {
 
     await storage.setString(dateKey, DateTime.now().toIso8601String());
     await saveHabits();
+  }
+
+  Future<void> _initCategories() async {
+    final categoriesList = storage.getStringList(categoriesKey);
+
+    if (categoriesList == null) {
+      await storage.setStringList(
+        categoriesKey,
+        _defaultCategories
+            .map((category) => jsonEncode(category.toJson()))
+            .toList(),
+      );
+      return;
+    }
   }
 }
