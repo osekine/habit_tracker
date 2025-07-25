@@ -18,6 +18,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    unawaited(widget.vm.load());
+  }
+
+  @override
   Widget build(BuildContext context) => ValueListenableBuilder(
     valueListenable: widget.vm.habits,
     builder:
@@ -43,8 +49,7 @@ class _HomePageState extends State<HomePage> {
                   delegate: HomePageHeader(
                     maxExtent: 70,
                     minExtent: 50,
-                    onEditTap:
-                        () async => const EditRoute().push(context),
+                    onEditTap: () => const EditRoute().go(context),
                   ),
                 ),
                 SliverList(

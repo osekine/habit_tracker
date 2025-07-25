@@ -1,11 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:habit_tracker/navigation/router.dart';
 import 'package:habit_tracker/theme/habit_colors.dart';
 import 'package:habit_tracker/view/features/edit/color_table.dart';
 import 'package:habit_tracker/view/features/edit/edit_page_header.dart';
-import 'package:habit_tracker/view/widgets/habit_icon_button.dart';
 import 'package:habit_tracker/view/widgets/habit_text_field.dart';
 import 'package:habit_tracker/view_model/view_model.dart';
 
@@ -37,7 +35,7 @@ class _EditPageState extends State<EditPage> {
             minExtent: 50,
             maxExtent: 70,
             vm: widget.vm,
-            onApplyTap: () async {
+            onApplyTap: () {
               if (_nameController.text.isEmpty) {
                 _nameFocusNode.requestFocus();
                 return;
@@ -47,10 +45,10 @@ class _EditPageState extends State<EditPage> {
                 _descController.text,
                 colorName,
               );
-              HomeRoute().pushReplacement(context);
+              HomeRoute().go(context);
             },
-            onCrossTap: () async {
-              HomeRoute().pushReplacement(context);
+            onCrossTap: () {
+              HomeRoute().go(context);
             },
           ),
         ),

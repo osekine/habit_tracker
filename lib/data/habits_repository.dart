@@ -12,14 +12,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 class HabitsRepository implements IHabitsRepository {
   final habitsKey = 'habits';
   final dateKey = 'date';
+  final revisionKey = 'revision';
+  
   late final SharedPreferences storage;
+  int _revision = 0;
   Map<int, Habit> habits = {};
+
+  @override
+  int get revision => _revision;
 
   HabitsRepository();
 
   @PostConstruct(preResolve: true)
   Future<void> init() async {
     storage = await SharedPreferences.getInstance();
+    _revision = storage.getInt(revisionKey) ?? 0;
     await loadHabits();
   }
 
@@ -45,6 +52,11 @@ class HabitsRepository implements IHabitsRepository {
       await storage.setStringList(
         habitsKey,
         habits.values.map((habit) => jsonEncode(habit.toJson())).toList(),
+      );
+      
+      await storage.setInt(
+        revisionKey,
+        ++_revision,
       );
       print('~~~SUCCESS SAVE~~~');
     } catch (e) {

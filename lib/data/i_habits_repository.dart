@@ -5,4 +5,5 @@ abstract interface class IHabitsRepository {
   Future<void> saveHabits(Habit newHabit);
   Future<List<Habit>> loadHabits();
   Future<void> archiveHabits();
+  int get revision;
 }

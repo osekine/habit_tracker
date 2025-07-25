@@ -11,10 +11,7 @@ class DayHabitWidget extends StatelessWidget {
   Widget build(BuildContext context) => ValueListenableBuilder(
     valueListenable: vm.count,
     builder:
-        (_, count, __) {
-          // ignore: avoid_print
-          print('REBUILD');
-          return Padding(
+        (_, count, __) => Padding(
           padding: const EdgeInsets.all(2),
           child: Container(
             height: size,
@@ -24,7 +21,6 @@ class DayHabitWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-        );
-        },
+        ),
   );
 }

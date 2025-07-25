@@ -10,6 +10,7 @@ class HomePageViewModel implements IHomePageViewModel {
   final IYearHabitViewModelFactory _habitViewModelFactory;
   final IHabitsRepository _repository;
   final _habits = ValueNotifier<List<IYearHabitViewModel>>([]);
+  int _lastRevision = -1;
 
   @override
   ValueListenable<List<IYearHabitViewModel>> get habits => _habits;
@@ -27,8 +28,11 @@ class HomePageViewModel implements IHomePageViewModel {
 
   @override
   Future<void> load() async {
-    final loadedData = await _repository.loadHabits();
-    _habits.value = loadedData.map(_habitViewModelFactory.create).toList();
+    if (_lastRevision < _repository.revision) {
+      _lastRevision = _repository.revision;
+      final loadedData = await _repository.loadHabits();
+      _habits.value = loadedData.map(_habitViewModelFactory.create).toList();
+    }
   }
 
   @override
