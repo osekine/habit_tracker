@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:habit_tracker/navigation/router.dart';
 import 'package:habit_tracker/theme/habit_colors.dart';
+import 'package:habit_tracker/view/features/categories/habit_category_widget.dart';
 import 'package:habit_tracker/view/features/home/year_habit_widget.dart';
 import 'package:habit_tracker/view/widgets/habit_icon_button.dart';
 import 'package:habit_tracker/view_model/view_model.dart';
@@ -50,6 +51,13 @@ class _HomePageState extends State<HomePage> {
                     maxExtent: 70,
                     minExtent: 50,
                     onEditTap: () => const EditRoute().go(context),
+                  ),
+                ),
+                SliverPersistentHeader(
+                  pinned: true,
+                  delegate: CategoriesHeader(
+                    extent: 32,
+                    categories: widget.vm.activeCategories,
                   ),
                 ),
                 SliverList(
@@ -111,5 +119,34 @@ class HomePageHeader extends SliverPersistentHeaderDelegate {
         ),
       ),
     ),
+  );
+}
+
+class CategoriesHeader extends SliverPersistentHeaderDelegate {
+  final List<ICategoryViewModel> categories;
+
+  @override
+  final double minExtent;
+
+  @override
+  final double maxExtent;
+
+  const CategoriesHeader({required double extent, required this.categories})
+    : minExtent = 0,
+      maxExtent = extent;
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
+      true;
+
+  @override
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) => ListView.builder(
+    scrollDirection: Axis.horizontal,
+    itemBuilder: (context, i) => HabitCategoryWidget(vm: categories[i]),
+    itemCount: categories.length,
   );
 }

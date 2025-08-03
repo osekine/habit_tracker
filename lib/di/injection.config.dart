@@ -15,6 +15,8 @@ import 'package:injectable/injectable.dart' as _i526;
 import '../data/habits_repository.dart' as _i47;
 import '../data/i_habits_repository.dart' as _i458;
 import '../view_model/edit_page_view_model.dart' as _i1011;
+import '../view_model/factories/category_view_model_factory.dart' as _i813;
+import '../view_model/factories/i_category_view_model_factory.dart' as _i773;
 import '../view_model/factories/i_year_habit_view_model_factory.dart' as _i33;
 import '../view_model/factories/year_habit_view_model_factory.dart' as _i1001;
 import '../view_model/home_page_view_model.dart' as _i682;
@@ -29,6 +31,9 @@ extension GetItInjectableX on _i174.GetIt {
     _i526.EnvironmentFilter? environmentFilter,
   }) async {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
+    gh.lazySingleton<_i773.ICategoryViewModelFactory>(
+      () => _i813.CategoryViewModelFactory(),
+    );
     await gh.lazySingletonAsync<_i458.IHabitsRepository>(() {
       final i = _i47.HabitsRepository();
       return i.init().then((_) => i);
@@ -50,6 +55,7 @@ extension GetItInjectableX on _i174.GetIt {
     );
     await gh.lazySingletonAsync<_i956.IHomePageViewModel>(() {
       final i = _i682.HomePageViewModel(
+        categoriesFactory: gh<_i773.ICategoryViewModelFactory>(),
         repository: gh<_i458.IHabitsRepository>(),
         habitViewModelFactory: gh<_i33.IYearHabitViewModelFactory>(),
       );
