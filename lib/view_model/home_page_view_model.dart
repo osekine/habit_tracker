@@ -13,8 +13,7 @@ class HomePageViewModel implements IHomePageViewModel {
   final IHabitsRepository _repository;
   final _habits = ValueNotifier<List<IYearHabitViewModel>>([]);
   final ICategoryViewModelFactory _categoriesFactory;
-  List<ICategoryViewModel> _activeCategories = [];
-  int _lastRevision = -1;
+  Set<ICategoryViewModel> _activeCategories = {};
 
   @override
   ValueListenable<List<IYearHabitViewModel>> get habits => _habits;
@@ -30,28 +29,33 @@ class HomePageViewModel implements IHomePageViewModel {
   @PostConstruct(preResolve: true)
   Future<void> init() async {
     await load();
-    _loadCategories();
   }
 
   @override
   Future<void> load() async {
+    await _loadHabits();
+    _loadCategories();
+  }
+
+  Future<void> _loadHabits() async {
     final loadedData = await _repository.loadHabits();
     _habits.value = loadedData.map(_habitViewModelFactory.create).toList();
-    _lastRevision = _repository.revision;
   }
 
   void _loadCategories() {
-    _activeCategories =
-        _repository.activeCategories.map(_categoriesFactory.create).toList();
+    final newActiveCategories =
+        _repository.activeCategories.map(_categoriesFactory.create).toSet();
 
-    for (final category in _activeCategories) {
+    for (final category in newActiveCategories.difference(_activeCategories)) {
       category.isChosen.addListener(
         () async =>
             category.isChosen.value
                 ? _habits.value = await category.fetchHabits()
-                : await load(),
+                : await _loadHabits(),
       );
     }
+
+    _activeCategories = newActiveCategories;
   }
 
   @override
@@ -61,5 +65,5 @@ class HomePageViewModel implements IHomePageViewModel {
   }
 
   @override
-  List<ICategoryViewModel> get activeCategories => _activeCategories;
+  List<ICategoryViewModel> get activeCategories => _activeCategories.toList();
 }

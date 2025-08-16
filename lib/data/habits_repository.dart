@@ -26,6 +26,7 @@ class HabitsRepository implements IHabitsRepository {
   Map<int, Habit> habits = {};
   Set<Category> _activeCategories = {};
   Set<Category> _allCategories = _defaultCategories;
+  bool _needReload = true;
 
   @override
   int get revision => _revision;
@@ -46,6 +47,8 @@ class HabitsRepository implements IHabitsRepository {
 
   @override
   Future<List<Habit>> loadHabits() async {
+    if(!_needReload) return habits.values.toList();
+
     final data = storage.getStringList(habitsKey);
     print('${data?.length}');
     final habitsList =
@@ -62,11 +65,13 @@ class HabitsRepository implements IHabitsRepository {
     };
 
     await _checkDate();
+    _needReload = false;
     return habits.values.toList();
   }
 
   @override
   Future<void> saveHabits([Habit? newHabit]) async {
+    _needReload = true;
     if (newHabit != null) habits[newHabit.id] = newHabit;
     try {
       await storage.setStringList(
@@ -85,12 +90,14 @@ class HabitsRepository implements IHabitsRepository {
   Future<void> archiveHabits() async {
     // TODO(NLU): now deleting, need archive
     await storage.setStringList(habitsKey, []);
+    _needReload = true;
   }
 
   @override
   Future<Set<Category>> loadCategories() async {
-    final categoriesList = storage.getStringList(categoriesKey);
+    if(!_needReload) return _allCategories;
 
+    final categoriesList = storage.getStringList(categoriesKey);
     if (categoriesList == null) {
       await storage.setStringList(
         categoriesKey,
@@ -104,12 +111,13 @@ class HabitsRepository implements IHabitsRepository {
               .map((json) => Category.fromJson(jsonDecode(json)))
               .toSet();
     }
-
+    _needReload = false;
     return _allCategories;
   }
 
   @override
   Future<void> saveCategories([Category? newCategory]) async {
+    _needReload = true;
     if (newCategory != null) _allCategories.add(newCategory);
 
     try {
