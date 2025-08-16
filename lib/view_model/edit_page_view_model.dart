@@ -40,6 +40,7 @@ class EditPageViewModel implements IEditPageViewModel {
                 .toList() ??
             [DailyProgress(day: DateTime.now(), progress: 0)],
         isActive: true,
+        categories: {const Category(name: 'defaultCategory', iconName: 'icon')},
       ),
     );
   }

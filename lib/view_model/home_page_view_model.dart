@@ -30,16 +30,27 @@ class HomePageViewModel implements IHomePageViewModel {
   @PostConstruct(preResolve: true)
   Future<void> init() async {
     await load();
+    _loadCategories();
   }
 
   @override
   Future<void> load() async {
-    if (_lastRevision < _repository.revision) {
-      _lastRevision = _repository.revision;
-      final loadedData = await _repository.loadHabits();
-      _habits.value = loadedData.map(_habitViewModelFactory.create).toList();
-      _activeCategories =
-          _repository.activeCategories.map(_categoriesFactory.create).toList();
+    final loadedData = await _repository.loadHabits();
+    _habits.value = loadedData.map(_habitViewModelFactory.create).toList();
+    _lastRevision = _repository.revision;
+  }
+
+  void _loadCategories() {
+    _activeCategories =
+        _repository.activeCategories.map(_categoriesFactory.create).toList();
+
+    for (final category in _activeCategories) {
+      category.isChosen.addListener(
+        () async =>
+            category.isChosen.value
+                ? _habits.value = await category.fetchHabits()
+                : await load(),
+      );
     }
   }
 

@@ -4,9 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:habit_tracker/navigation/router.dart';
 import 'package:habit_tracker/theme/habit_colors.dart';
-import 'package:habit_tracker/view/features/categories/habit_category_widget.dart';
+import 'package:habit_tracker/view/features/home/categories_header.dart';
+import 'package:habit_tracker/view/features/home/home_page_header.dart';
 import 'package:habit_tracker/view/features/home/year_habit_widget.dart';
-import 'package:habit_tracker/view/widgets/habit_icon_button.dart';
 import 'package:habit_tracker/view_model/view_model.dart';
 
 class HomePage extends StatefulWidget {
@@ -76,77 +76,5 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-  );
-}
-
-class HomePageHeader extends SliverPersistentHeaderDelegate {
-  final FutureOr<void> Function()? onEditTap;
-
-  @override
-  final double maxExtent;
-
-  @override
-  final double minExtent;
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
-      true;
-
-  const HomePageHeader({
-    required double maxExtent,
-    required double minExtent,
-    this.onEditTap,
-  }) : minExtent = minExtent + kToolbarHeight,
-       maxExtent = maxExtent + kToolbarHeight;
-
-  @override
-  Widget build(
-    BuildContext context,
-    double shrinkOffset,
-    bool overlapsContent,
-  ) => ColoredBox(
-    color: ColorCollection.monocrome['white']!.baseColor.withAlpha(255),
-    child: Align(
-      alignment: Alignment.bottomRight,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-        child: SizedBox.square(
-          dimension: 40,
-          child: HabitIconButton(
-            onTap: onEditTap ?? () {},
-            icon: const Icon(Icons.edit),
-          ),
-        ),
-      ),
-    ),
-  );
-}
-
-class CategoriesHeader extends SliverPersistentHeaderDelegate {
-  final List<ICategoryViewModel> categories;
-
-  @override
-  final double minExtent;
-
-  @override
-  final double maxExtent;
-
-  const CategoriesHeader({required double extent, required this.categories})
-    : minExtent = 0,
-      maxExtent = extent;
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
-      true;
-
-  @override
-  Widget build(
-    BuildContext context,
-    double shrinkOffset,
-    bool overlapsContent,
-  ) => ListView.builder(
-    scrollDirection: Axis.horizontal,
-    itemBuilder: (context, i) => HabitCategoryWidget(vm: categories[i]),
-    itemCount: categories.length,
   );
 }

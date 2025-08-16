@@ -31,9 +31,6 @@ extension GetItInjectableX on _i174.GetIt {
     _i526.EnvironmentFilter? environmentFilter,
   }) async {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
-    gh.lazySingleton<_i773.ICategoryViewModelFactory>(
-      () => _i813.CategoryViewModelFactory(),
-    );
     await gh.lazySingletonAsync<_i458.IHabitsRepository>(() {
       final i = _i47.HabitsRepository();
       return i.init().then((_) => i);
@@ -51,6 +48,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i33.IYearHabitViewModelFactory>(
       () => _i1001.YearHabitViewModelFactory(
         habitsRepository: gh<_i458.IHabitsRepository>(),
+      ),
+    );
+    gh.lazySingleton<_i773.ICategoryViewModelFactory>(
+      () => _i813.CategoryViewModelFactory(
+        repository: gh<_i458.IHabitsRepository>(),
+        habitsFactory: gh<_i33.IYearHabitViewModelFactory>(),
       ),
     );
     await gh.lazySingletonAsync<_i956.IHomePageViewModel>(() {

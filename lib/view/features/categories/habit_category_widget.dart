@@ -12,14 +12,34 @@ class HabitCategoryWidget extends StatelessWidget {
     builder:
         (context, isChosen, _) => DecoratedBox(
           decoration: BoxDecoration(
+            border: Border.all(color: HabitColors.gray.baseColor),
             borderRadius: BorderRadius.circular(8),
             color:
                 isChosen
                     ? HabitColors.anthracite.baseColor
-                    : HabitColors.gray.baseColor,
+                    : HabitColors.white.baseColor,
           ),
-          child: Row(
-            children: [const SizedBox.square(dimension: 24), Text(vm.title)],
+          child: GestureDetector(
+            onTap: vm.switchChosen,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(
+                children: [
+                  const SizedBox.square(dimension: 24),
+                  Text(
+                    vm.title,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color:
+                          isChosen
+                              ? HabitColors.white.color
+                              : HabitColors.black.color,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
   );
