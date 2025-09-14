@@ -35,16 +35,6 @@ extension GetItInjectableX on _i174.GetIt {
       final i = _i47.HabitsRepository();
       return i.init().then((_) => i);
     }, preResolve: true);
-    gh.factoryParam<
-      _i94.IEditPageViewModel,
-      _i338.IYearHabitViewModel?,
-      dynamic
-    >(
-      (editableHabit, _) => _i1011.EditPageViewModel(
-        repository: gh<_i458.IHabitsRepository>(),
-        editableHabit: editableHabit,
-      ),
-    );
     gh.lazySingleton<_i33.IYearHabitViewModelFactory>(
       () => _i1001.YearHabitViewModelFactory(
         habitsRepository: gh<_i458.IHabitsRepository>(),
@@ -54,6 +44,17 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i813.CategoryViewModelFactory(
         repository: gh<_i458.IHabitsRepository>(),
         habitsFactory: gh<_i33.IYearHabitViewModelFactory>(),
+      ),
+    );
+    gh.factoryParam<
+      _i94.IEditPageViewModel,
+      _i338.IYearHabitViewModel?,
+      dynamic
+    >(
+      (editableHabit, _) => _i1011.EditPageViewModel(
+        repository: gh<_i458.IHabitsRepository>(),
+        categoriesFactory: gh<_i773.ICategoryViewModelFactory>(),
+        editableHabit: editableHabit,
       ),
     );
     await gh.lazySingletonAsync<_i956.IHomePageViewModel>(() {

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:habit_tracker/navigation/router.dart';
 import 'package:habit_tracker/theme/habit_colors.dart';
+import 'package:habit_tracker/view/features/categories/choose_category_page.dart';
 import 'package:habit_tracker/view/features/edit/color_table.dart';
 import 'package:habit_tracker/view/features/edit/edit_page_header.dart';
+import 'package:habit_tracker/view/widgets/habit_text_button.dart';
 import 'package:habit_tracker/view/widgets/habit_text_field.dart';
 import 'package:habit_tracker/view_model/view_model.dart';
 
@@ -58,6 +59,7 @@ class _EditPageState extends State<EditPage> {
               padding: const EdgeInsets.all(16),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const SizedBox(
                     width: double.infinity,
@@ -79,6 +81,16 @@ class _EditPageState extends State<EditPage> {
                     focusNode: _descFocusNode,
                   ),
                   const SizedBox(height: 4),
+                  HabitTextButton(
+                    text: 'Category',
+                    needBorder: true,
+                    onTap:
+                        () async => ChooseCategoryPage.showAsModalBottomSheet(
+                          context,
+                          categories: widget.vm.categories,
+                        ),
+                  ),
+                  const SizedBox(height: 8),
                   RepaintBoundary(
                     child: ColorTable(onColorChangeCallback: _changeColor),
                   ),

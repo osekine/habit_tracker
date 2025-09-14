@@ -47,7 +47,7 @@ class _HabitTextFieldState extends State<HabitTextField> {
               border: Border.all(
                 color: !showError ? shadowColor : shadowColor.withRed(225),
               ),
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(8),
               boxShadow: const [
                 BoxShadow(offset: Offset(0, 2), color: shadowColor),
               ],

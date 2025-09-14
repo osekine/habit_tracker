@@ -26,15 +26,19 @@ class HabitCategoryWidget extends StatelessWidget {
               child: Row(
                 children: [
                   const SizedBox.square(dimension: 24),
-                  Text(
-                    vm.title,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color:
-                          isChosen
-                              ? HabitColors.white.color
-                              : HabitColors.black.color,
+                  Expanded(
+                    child: Text(
+                      vm.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color:
+                            isChosen
+                                ? HabitColors.white.color
+                                : HabitColors.black.color,
+                      ),
                     ),
                   ),
                 ],

@@ -2,6 +2,9 @@ import 'dart:math';
 
 import 'package:habit_tracker/data/i_habits_repository.dart';
 import 'package:habit_tracker/domain/domain.dart';
+import 'package:habit_tracker/view_model/category_view_model.dart';
+import 'package:habit_tracker/view_model/factories/i_category_view_model_factory.dart';
+import 'package:habit_tracker/view_model/i_category_view_model.dart';
 import 'package:habit_tracker/view_model/i_edit_page_view_model.dart';
 import 'package:habit_tracker/view_model/i_year_habit_view_model.dart';
 import 'package:injectable/injectable.dart';
@@ -10,12 +13,14 @@ import 'package:injectable/injectable.dart';
 class EditPageViewModel implements IEditPageViewModel {
   final IHabitsRepository _repository;
   final IYearHabitViewModel? _habit;
+  final ICategoryViewModelFactory _categoriesFactory;
 
-  // TODO(NLU): add factory param for passing Habit
   EditPageViewModel({
     required IHabitsRepository repository,
+    required ICategoryViewModelFactory categoriesFactory,
     @factoryParam IYearHabitViewModel? editableHabit,
   }) : _repository = repository,
+       _categoriesFactory = categoriesFactory,
        _habit = editableHabit;
 
   @override
@@ -44,4 +49,20 @@ class EditPageViewModel implements IEditPageViewModel {
       ),
     );
   }
+
+  @override
+  List<ICategoryViewModel> get categories => [
+    _categoriesFactory.create(
+      const Category(name: 'defaultCategory', iconName: 'icon'),
+    ),
+    _categoriesFactory.create(
+      const Category(name: 'dasdasdasdadasdsadasdCategory', iconName: 'icon'),
+    ),
+    _categoriesFactory.create(
+      const Category(name: 'category', iconName: 'icon'),
+    ),
+    _categoriesFactory.create(
+      const Category(name: 'efaultCategory', iconName: 'icon'),
+    ),
+  ];
 }
