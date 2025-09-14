@@ -58,11 +58,11 @@ class ChooseCategoryPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                   ],
-                  HabitTextButton(
-                    onTap: () {},
-                    text: 'New category',
-                    needBorder: true,
-                  ),
+                  // HabitTextButton(
+                  //   onTap: () {},
+                  //   text: 'New category',
+                  //   needBorder: true,
+                  // ),
                 ],
               ),
             ),

@@ -4,7 +4,7 @@ import 'package:habit_tracker/view/features/categories/habit_category_widget.dar
 import 'package:habit_tracker/view_model/view_model.dart';
 
 class CategoriesHeader extends SliverPersistentHeaderDelegate {
-  final List<ICategoryViewModel> categories;
+  final IHomePageViewModel vm;
 
   @override
   final double minExtent;
@@ -12,7 +12,7 @@ class CategoriesHeader extends SliverPersistentHeaderDelegate {
   @override
   final double maxExtent;
 
-  const CategoriesHeader({required double extent, required this.categories})
+  const CategoriesHeader({required double extent, required this.vm})
     : minExtent = extent,
       maxExtent = extent;
 
@@ -29,10 +29,18 @@ class CategoriesHeader extends SliverPersistentHeaderDelegate {
     color: HabitColors.white.color,
     child: Padding(
       padding: const EdgeInsets.fromLTRB(8, 0, 8, 2),
-      child: ListView.builder(
+      child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        itemBuilder: (context, i) => HabitCategoryWidget(vm: categories[i]),
-        itemCount: categories.length,
+        itemBuilder: (context, i) {
+          final thisCategory = vm.activeCategories[i];
+          return HabitCategoryWidget(
+            vm: thisCategory,
+            onTap: vm.filterHabits,
+            isChosen: vm.chosenCategory == thisCategory,
+          );
+        },
+        separatorBuilder: (context, index) => const SizedBox(width: 4),
+        itemCount: vm.activeCategories.length,
       ),
     ),
   );

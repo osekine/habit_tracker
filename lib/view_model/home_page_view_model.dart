@@ -14,6 +14,8 @@ class HomePageViewModel implements IHomePageViewModel {
   final _habits = ValueNotifier<List<IYearHabitViewModel>>([]);
   final ICategoryViewModelFactory _categoriesFactory;
   Set<ICategoryViewModel> _activeCategories = {};
+  List<IYearHabitViewModel> _allHabits = [];
+  ICategoryViewModel? _chosenCategory;
 
   @override
   ValueListenable<List<IYearHabitViewModel>> get habits => _habits;
@@ -39,7 +41,8 @@ class HomePageViewModel implements IHomePageViewModel {
 
   Future<void> _loadHabits() async {
     final loadedData = await _repository.loadHabits();
-    _habits.value = loadedData.map(_habitViewModelFactory.create).toList();
+    _allHabits = loadedData.map(_habitViewModelFactory.create).toList();
+    filterHabits();
   }
 
   void _loadCategories() {
@@ -66,4 +69,18 @@ class HomePageViewModel implements IHomePageViewModel {
 
   @override
   List<ICategoryViewModel> get activeCategories => _activeCategories.toList();
+
+  @override
+  void filterHabits([ICategoryViewModel? category]) {
+    _chosenCategory = category;
+    _habits.value =
+        category == null
+            ? _allHabits
+            : _allHabits
+                .where((habit) => habit.categoryName == category.title)
+                .toList();
+  }
+
+  @override
+  ICategoryViewModel? get chosenCategory => _chosenCategory;
 }

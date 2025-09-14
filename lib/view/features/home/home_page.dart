@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
                   pinned: true,
                   delegate: CategoriesHeader(
                     extent: 32,
-                    categories: widget.vm.activeCategories,
+                    vm: widget.vm,
                   ),
                 ),
                 SliverList(

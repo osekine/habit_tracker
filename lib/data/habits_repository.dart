@@ -42,6 +42,7 @@ class HabitsRepository implements IHabitsRepository {
     _revision = storage.getInt(revisionKey) ?? 0;
 
     await loadCategories();
+    _needReload = true;
     await loadHabits();
   }
 

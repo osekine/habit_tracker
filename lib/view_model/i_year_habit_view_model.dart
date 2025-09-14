@@ -6,6 +6,7 @@ abstract interface class IYearHabitViewModel {
   int get id;
   String get name;
   String? get description;
+  String? get categoryName;
   List<IDayHabitViewModel> get days;
   IDayHabitViewModel get today;
   HabitColor get baseColor;
