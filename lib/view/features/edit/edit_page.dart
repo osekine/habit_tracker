@@ -81,13 +81,18 @@ class _EditPageState extends State<EditPage> {
                     focusNode: _descFocusNode,
                   ),
                   const SizedBox(height: 4),
-                  HabitTextButton(
-                    text: 'Category',
-                    needBorder: true,
-                    onTap:
-                        () async => ChooseCategoryPage.showAsModalBottomSheet(
-                          context,
-                          vm: widget.vm,
+                  ValueListenableBuilder(
+                    valueListenable: widget.vm.chosenCategory,
+                    builder:
+                        (context, category, _) => HabitTextButton(
+                          text: category == null ? 'Category' : category.title,
+                          needBorder: true,
+                          onTap:
+                              () async =>
+                                  ChooseCategoryPage.showAsModalBottomSheet(
+                                    context,
+                                    vm: widget.vm,
+                                  ),
                         ),
                   ),
                   const SizedBox(height: 8),

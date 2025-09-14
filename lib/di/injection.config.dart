@@ -46,26 +46,24 @@ extension GetItInjectableX on _i174.GetIt {
         habitsFactory: gh<_i33.IYearHabitViewModelFactory>(),
       ),
     );
-    gh.factoryParamAsync<
+    gh.factoryParam<
       _i94.IEditPageViewModel,
       _i338.IYearHabitViewModel?,
       dynamic
-    >((editableHabit, _) {
-      final i = _i1011.EditPageViewModel(
+    >(
+      (editableHabit, _) => _i1011.EditPageViewModel(
         repository: gh<_i458.IHabitsRepository>(),
         categoriesFactory: gh<_i773.ICategoryViewModelFactory>(),
         editableHabit: editableHabit,
-      );
-      return i.init().then((_) => i);
-    });
-    await gh.lazySingletonAsync<_i956.IHomePageViewModel>(() {
-      final i = _i682.HomePageViewModel(
+      )..init(),
+    );
+    gh.lazySingleton<_i956.IHomePageViewModel>(
+      () => _i682.HomePageViewModel(
         categoriesFactory: gh<_i773.ICategoryViewModelFactory>(),
         repository: gh<_i458.IHabitsRepository>(),
         habitViewModelFactory: gh<_i33.IYearHabitViewModelFactory>(),
-      );
-      return i.init().then((_) => i);
-    }, preResolve: true);
+      ),
+    );
     return this;
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:habit_tracker/view/features/categories/habit_category_widget.dart';
 import 'package:habit_tracker/view/widgets/habit_text_button.dart';
-import 'package:habit_tracker/view_model/i_category_view_model.dart';
 import 'package:habit_tracker/view_model/view_model.dart';
 
 class ChooseCategoryPage extends StatelessWidget {
@@ -21,32 +20,52 @@ class ChooseCategoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final maxWidth = MediaQuery.sizeOf(context).width - 16;
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Flexible(
-              child: GridView.count(
-                semanticChildCount: vm.categories.length,
-                childAspectRatio: 32 / 8,
-                mainAxisSpacing: 8,
-                crossAxisSpacing: 8,
-                crossAxisCount: 2,
-                children:
-                    vm.categories
-                        .map((e) => HabitCategoryWidget(vm: e))
-                        .toList(),
+      body: ValueListenableBuilder(
+        valueListenable: vm.chosenCategory,
+        builder:
+            (context, category, _) => Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Flexible(
+                    child: GridView.count(
+                      semanticChildCount: vm.categories.length,
+                      childAspectRatio: 32 / 8,
+                      mainAxisSpacing: 8,
+                      crossAxisSpacing: 8,
+                      crossAxisCount: 2,
+                      children:
+                          vm.categories
+                              .map(
+                                (e) => HabitCategoryWidget(
+                                  vm: e,
+                                  onTap: vm.chooseCategory,
+                                  isChosen: e == vm.chosenCategory.value,
+                                ),
+                              )
+                              .toList(),
+                    ),
+                  ),
+                  if (category != null) ...[
+                    HabitTextButton(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      text: 'Choose category',
+                      needBorder: true,
+                    ),
+                    const SizedBox(height: 4),
+                  ],
+                  HabitTextButton(
+                    onTap: () {},
+                    text: 'New category',
+                    needBorder: true,
+                  ),
+                ],
               ),
             ),
-            HabitTextButton(
-              onTap: () {},
-              text: 'New category',
-              needBorder: true,
-            ),
-          ],
-        ),
       ),
     );
   }

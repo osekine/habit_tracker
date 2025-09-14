@@ -28,9 +28,8 @@ class EditPageViewModel implements IEditPageViewModel {
        _habit = editableHabit;
 
   @postConstruct
-  Future<void> init() async {
-    final categoriesSet = await _repository.loadCategories();
-    _categoriesList = categoriesSet.map(_categoriesFactory.create).toList();
+  void init() {
+    unawaited(_loadCategories());
   }
 
   @override
@@ -72,7 +71,12 @@ class EditPageViewModel implements IEditPageViewModel {
   ValueListenable<ICategoryViewModel?> get chosenCategory => _chosenCategory;
 
   @override
-  void chooseCategory(ICategoryViewModel category) {
+  void chooseCategory(ICategoryViewModel? category) {
     _chosenCategory.value = category;
+  }
+
+  Future<void> _loadCategories() async {
+    final categoriesSet = await _repository.loadCategories();
+    _categoriesList = categoriesSet.map(_categoriesFactory.create).toList();
   }
 }

@@ -26,7 +26,7 @@ class HomePageViewModel implements IHomePageViewModel {
        _habitViewModelFactory = habitViewModelFactory,
        _categoriesFactory = categoriesFactory;
 
-  @PostConstruct(preResolve: true)
+  @preResolve
   Future<void> init() async {
     await load();
   }
