@@ -17,7 +17,7 @@ abstract class Habit with _$Habit {
     required String colorName,
     required List<DailyProgress> days,
     required bool isActive,
-    Set<Category>? categories,
+    Category? category,
   }) = _Habit;
 
   factory Habit.fromJson(Map<String, dynamic> json) => _$HabitFromJson(json);

@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:habit_tracker/view/features/categories/habit_category_widget.dart';
 import 'package:habit_tracker/view/widgets/habit_text_button.dart';
 import 'package:habit_tracker/view_model/i_category_view_model.dart';
+import 'package:habit_tracker/view_model/view_model.dart';
 
 class ChooseCategoryPage extends StatelessWidget {
-  final List<ICategoryViewModel> categories;
-  const ChooseCategoryPage({required this.categories, super.key});
+  final IEditPageViewModel vm;
+  const ChooseCategoryPage({required this.vm, super.key});
 
   static Future<void> showAsModalBottomSheet(
     BuildContext context, {
-    required List<ICategoryViewModel> categories,
+    required IEditPageViewModel vm,
   }) => showModalBottomSheet(
     context: context,
     showDragHandle: true,
-    builder: (context) => ChooseCategoryPage(categories: categories),
+    builder: (context) => ChooseCategoryPage(vm: vm),
   );
 
   @override
@@ -28,13 +29,15 @@ class ChooseCategoryPage extends StatelessWidget {
           children: [
             Flexible(
               child: GridView.count(
-                semanticChildCount: categories.length,
+                semanticChildCount: vm.categories.length,
                 childAspectRatio: 32 / 8,
                 mainAxisSpacing: 8,
                 crossAxisSpacing: 8,
                 crossAxisCount: 2,
                 children:
-                    categories.map((e) => HabitCategoryWidget(vm: e)).toList(),
+                    vm.categories
+                        .map((e) => HabitCategoryWidget(vm: e))
+                        .toList(),
               ),
             ),
             HabitTextButton(

@@ -38,14 +38,14 @@ class CategoryViewModel implements ICategoryViewModel {
     final filteredHabits =
         allHabits
             .map((habit) {
-              if (habit.categories != null &&
-                  habit.categories!.contains(_category)) {
-                return _habitsFactory.create(habit);
-              }
+              if (habit.category != null) return _habitsFactory.create(habit);
             })
             .nonNulls
             .toList();
 
     return filteredHabits;
   }
+
+  @override
+  String get iconName => _category.iconName;
 }

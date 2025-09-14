@@ -87,7 +87,7 @@ class _EditPageState extends State<EditPage> {
                     onTap:
                         () async => ChooseCategoryPage.showAsModalBottomSheet(
                           context,
-                          categories: widget.vm.categories,
+                          vm: widget.vm,
                         ),
                   ),
                   const SizedBox(height: 8),

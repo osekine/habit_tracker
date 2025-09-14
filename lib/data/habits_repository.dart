@@ -47,7 +47,7 @@ class HabitsRepository implements IHabitsRepository {
 
   @override
   Future<List<Habit>> loadHabits() async {
-    if(!_needReload) return habits.values.toList();
+    if (!_needReload) return habits.values.toList();
 
     final data = storage.getStringList(habitsKey);
     print('${data?.length}');
@@ -61,7 +61,7 @@ class HabitsRepository implements IHabitsRepository {
 
     _activeCategories = {
       for (final habit in habitsList)
-        for (final cat in habit.categories ?? {}) cat,
+        if (habit.category != null) habit.category!,
     };
 
     await _checkDate();
@@ -95,7 +95,7 @@ class HabitsRepository implements IHabitsRepository {
 
   @override
   Future<Set<Category>> loadCategories() async {
-    if(!_needReload) return _allCategories;
+    if (!_needReload) return _allCategories;
 
     final categoriesList = storage.getStringList(categoriesKey);
     if (categoriesList == null) {
