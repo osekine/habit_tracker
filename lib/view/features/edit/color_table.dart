@@ -34,7 +34,7 @@ class _ColorTableState extends State<ColorTable> {
           (_, chosenColor, __) => Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Color'),
+              const Text('Цвет'),
               const SizedBox(height: 12),
               for (int y = 0; y < rowsCount; ++y) ...[
                 Row(

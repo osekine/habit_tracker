@@ -53,14 +53,14 @@ class ChooseCategoryPage extends StatelessWidget {
                       onTap: () {
                         Navigator.of(context).pop();
                       },
-                      text: 'Choose category',
+                      text: 'Выбрать категорию',
                       needBorder: true,
                     ),
                     const SizedBox(height: 4),
                   ],
                   // HabitTextButton(
                   //   onTap: () {},
-                  //   text: 'New category',
+                  //   text: 'Новая категорияы',
                   //   needBorder: true,
                   // ),
                 ],

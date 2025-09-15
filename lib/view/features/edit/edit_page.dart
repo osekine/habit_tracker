@@ -66,18 +66,18 @@ class _EditPageState extends State<EditPage> {
                     height: 250,
                     child: ColoredBox(
                       color: Colors.black45,
-                      child: Center(child: Text('Choose your icon')),
+                      child: Center(child: Text('Выбрать иконку')),
                     ),
                   ),
                   HabitTextField(
                     controller: _nameController,
-                    hint: 'Name',
+                    hint: 'Название',
                     focusNode: _nameFocusNode,
                     isNeccessary: true,
                   ),
                   HabitTextField(
                     controller: _descController,
-                    hint: 'Description',
+                    hint: 'Описание',
                     focusNode: _descFocusNode,
                   ),
                   const SizedBox(height: 4),
@@ -85,7 +85,7 @@ class _EditPageState extends State<EditPage> {
                     valueListenable: widget.vm.chosenCategory,
                     builder:
                         (context, category, _) => HabitTextButton(
-                          text: category == null ? 'Category' : category.title,
+                          text: category == null ? 'Категория' : category.title,
                           needBorder: true,
                           onTap:
                               () async =>

@@ -11,9 +11,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 @LazySingleton(as: IHabitsRepository)
 class HabitsRepository implements IHabitsRepository {
   static final _defaultCategories = <Category>{
-    const Category(name: 'Health', iconName: ''),
-    const Category(name: 'Sport', iconName: ''),
-    const Category(name: 'Wealth', iconName: ''),
+    const Category(name: 'Кукушка', iconName: ''),
+    const Category(name: 'Фитнес', iconName: ''),
+    const Category(name: 'Учеба', iconName: ''),
+    const Category(name: 'Удовольствие', iconName: ''),
   };
 
   final habitsKey = 'habits';
