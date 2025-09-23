@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:habit_tracker/data/i_habits_repository.dart';
 import 'package:habit_tracker/domain/domain.dart';
 import 'package:habit_tracker/theme/habit_color.dart';
@@ -9,6 +11,7 @@ import 'package:habit_tracker/view_model/i_year_habit_view_model.dart';
 class YearHabitViewModel implements IYearHabitViewModel {
   final IHabitsRepository _habitsRepository;
   final Habit _habit;
+  late List<IDayHabitViewModel> _days;
 
   @override
   late final HabitColor baseColor;
@@ -17,7 +20,7 @@ class YearHabitViewModel implements IYearHabitViewModel {
   int get id => _habit.id;
 
   @override
-  late final List<IDayHabitViewModel> days;
+  List<IDayHabitViewModel> get days => _days;
 
   @override
   String? get description => _habit.description;
@@ -36,7 +39,7 @@ class YearHabitViewModel implements IYearHabitViewModel {
     baseColor =
     // TODO(NLU): change that cringe
     HabitColor.fromHabitColor(ColorCollection.habits[habit.colorName]!);
-    days =
+    _days =
         habit.days
             .map(
               (dailyProgress) => DayHabitViewModel(
@@ -54,8 +57,10 @@ class YearHabitViewModel implements IYearHabitViewModel {
     final daysToSave =
         days
             .map(
-              (dayVM) =>
-                  DailyProgress(day: dayVM.day, progress: dayVM.count.value),
+              (dayVM) => DailyProgress(
+                day: dayVM.day,
+                progress: dayVM.count.value,
+              ),
             )
             .toList();
     await _habitsRepository.saveHabits(_habit.copyWith(days: daysToSave));
@@ -66,7 +71,7 @@ class YearHabitViewModel implements IYearHabitViewModel {
 
   @override
   void updateDayProgress({required DateTime day}) {
-    final neededDay = days.firstWhere(
+    final neededDay = _days.firstWhere(
       (dayVM) => dayVM.day.day == day.day,
       orElse:
           () => DayHabitViewModel(
@@ -74,10 +79,28 @@ class YearHabitViewModel implements IYearHabitViewModel {
             habitColor: HabitColor.fromHabitColor(baseColor),
             save: saveChanges,
           ),
-    );
+    )..add();
 
-    if (!days.contains(neededDay)) days.add(neededDay);
+    if (_days.contains(neededDay)) return;
 
-    neededDay.add();
+    _addNewDays(neededDay);
+  }
+
+  void _addNewDays(IDayHabitViewModel newDay) {
+    final firstDay = _days.last.day;
+    final daysCount = firstDay.difference(newDay.day);
+
+    _days = [
+      ..._days,
+      for (int i = 1; i < daysCount.inDays; ++i)
+        DayHabitViewModel(
+          day: firstDay.subtract(Duration(days: i)),
+          habitColor: HabitColor.fromHabitColor(baseColor),
+          save: saveChanges,
+        ),
+      newDay,
+    ];
+
+    unawaited(saveChanges());
   }
 }
