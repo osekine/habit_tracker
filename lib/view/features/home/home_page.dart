@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: ColorCollection.monocrome['white']!.baseColor
               .withAlpha(255),
           floatingActionButton:
-              !kDebugMode && widget.vm.habits.value.isEmpty
+              !kDebugMode
                   ? null
                   : FloatingActionButton(
                     onPressed: () async {
