@@ -7,12 +7,13 @@ class HabitCalendarPage extends StatefulWidget {
   final IYearHabitViewModel vm;
   const HabitCalendarPage({super.key, required this.vm});
 
-  static void showAsModalBottomSheet(
+  static Future<void> showAsModalBottomSheet(
     BuildContext context, {
     required IYearHabitViewModel vm,
-  }) => showBottomSheet(
+  }) => showModalBottomSheet(
     context: context,
     builder: (_) => HabitCalendarPage(vm: vm),
+    isScrollControlled: true,
   );
 
   @override
@@ -34,19 +35,28 @@ class _HabitCalendarPageState extends State<HabitCalendarPage> {
   }
 
   @override
-  Widget build(BuildContext context) => ListView(
-    children: [
-      YearHabitWidget(vm: vm),
-      const Text('Заглушка'),
-      ValueListenableBuilder(
-        valueListenable: focusedCalendarDay,
-        builder:
-            (_, focusedDay, __) => TableCalendar(
-              focusedDay: focusedDay,
-              firstDay: firstCalendarDay,
-              lastDay: lastCalendarDay,
-            ),
-      ),
-    ],
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.all(8),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        YearHabitWidget(vm: vm),
+        const Divider(height: 32),
+        ValueListenableBuilder(
+          valueListenable: focusedCalendarDay,
+          builder:
+              (_, focusedDay, __) => TableCalendar(
+                focusedDay: focusedDay,
+                firstDay: firstCalendarDay,
+                lastDay: lastCalendarDay,
+                headerVisible: false,
+                onDaySelected:
+                    (selectedDay, focusedDay) =>
+                        vm.updateDayProgress(day: selectedDay),
+              ),
+        ),
+        const SizedBox(height: 16),
+      ],
+    ),
   );
 }
