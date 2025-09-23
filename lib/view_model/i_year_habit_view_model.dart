@@ -11,4 +11,5 @@ abstract interface class IYearHabitViewModel {
   IDayHabitViewModel get today;
   HabitColor get baseColor;
   Future<void> saveChanges();
+  void updateDayProgress({required DateTime day});
 }

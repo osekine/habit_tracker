@@ -60,7 +60,24 @@ class YearHabitViewModel implements IYearHabitViewModel {
             .toList();
     await _habitsRepository.saveHabits(_habit.copyWith(days: daysToSave));
   }
-  
+
   @override
   String? get categoryName => _habit.category?.name;
+
+  @override
+  void updateDayProgress({required DateTime day}) {
+    final neededDay = days.firstWhere(
+      (dayVM) => dayVM.day.day == day.day,
+      orElse:
+          () => DayHabitViewModel(
+            day: day,
+            habitColor: HabitColor.fromHabitColor(baseColor),
+            save: saveChanges,
+          ),
+    );
+
+    if (!days.contains(neededDay)) days.add(neededDay);
+
+    neededDay.add();
+  }
 }
