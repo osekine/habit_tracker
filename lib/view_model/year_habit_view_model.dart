@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:habit_tracker/data/i_habits_repository.dart';
 import 'package:habit_tracker/domain/domain.dart';
 import 'package:habit_tracker/theme/habit_color.dart';
@@ -11,7 +13,7 @@ import 'package:habit_tracker/view_model/i_year_habit_view_model.dart';
 class YearHabitViewModel implements IYearHabitViewModel {
   final IHabitsRepository _habitsRepository;
   final Habit _habit;
-  late List<IDayHabitViewModel> _days;
+  final _days = ValueNotifier<List<IDayHabitViewModel>>([]);
 
   @override
   late final HabitColor baseColor;
@@ -20,7 +22,7 @@ class YearHabitViewModel implements IYearHabitViewModel {
   int get id => _habit.id;
 
   @override
-  List<IDayHabitViewModel> get days => _days;
+  ValueListenable<List<IDayHabitViewModel>> get days => _days;
 
   @override
   String? get description => _habit.description;
@@ -29,7 +31,7 @@ class YearHabitViewModel implements IYearHabitViewModel {
   String get name => _habit.name;
 
   @override
-  IDayHabitViewModel get today => days[0];
+  IDayHabitViewModel get today => days.value[0];
 
   YearHabitViewModel({
     required Habit habit,
@@ -39,7 +41,7 @@ class YearHabitViewModel implements IYearHabitViewModel {
     baseColor =
     // TODO(NLU): change that cringe
     HabitColor.fromHabitColor(ColorCollection.habits[habit.colorName]!);
-    _days =
+    _days.value =
         habit.days
             .map(
               (dailyProgress) => DayHabitViewModel(
@@ -55,12 +57,10 @@ class YearHabitViewModel implements IYearHabitViewModel {
   @override
   Future<void> saveChanges() async {
     final daysToSave =
-        days
+        days.value
             .map(
-              (dayVM) => DailyProgress(
-                day: dayVM.day,
-                progress: dayVM.count.value,
-              ),
+              (dayVM) =>
+                  DailyProgress(day: dayVM.day, progress: dayVM.count.value),
             )
             .toList();
     await _habitsRepository.saveHabits(_habit.copyWith(days: daysToSave));
@@ -71,8 +71,8 @@ class YearHabitViewModel implements IYearHabitViewModel {
 
   @override
   void updateDayProgress({required DateTime day}) {
-    final neededDay = _days.firstWhere(
-      (dayVM) => dayVM.day.day == day.day,
+    final neededDay = _days.value.firstWhere(
+      (dayVM) => DateUtils.isSameDay(dayVM.day, day),
       orElse:
           () => DayHabitViewModel(
             day: day,
@@ -81,17 +81,17 @@ class YearHabitViewModel implements IYearHabitViewModel {
           ),
     )..add();
 
-    if (_days.contains(neededDay)) return;
+    if (_days.value.contains(neededDay)) return;
 
     _addNewDays(neededDay);
   }
 
   void _addNewDays(IDayHabitViewModel newDay) {
-    final firstDay = _days.last.day;
+    final firstDay = _days.value.last.day;
     final daysCount = firstDay.difference(newDay.day);
 
-    _days = [
-      ..._days,
+    _days.value = [
+      ..._days.value,
       for (int i = 1; i < daysCount.inDays; ++i)
         DayHabitViewModel(
           day: firstDay.subtract(Duration(days: i)),

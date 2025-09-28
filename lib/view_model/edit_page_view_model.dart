@@ -48,7 +48,7 @@ class EditPageViewModel implements IEditPageViewModel {
         description: description,
         colorName: colorName,
         days:
-            _habit?.days
+            _habit?.days.value
                 .map(
                   (day) =>
                       DailyProgress(day: day.day, progress: day.count.value),

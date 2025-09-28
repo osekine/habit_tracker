@@ -20,7 +20,7 @@ class _YearActivityWidgetState extends State<YearActivityWidget> {
   void initState() {
     super.initState();
 
-    days = widget.vm.days;
+    days = widget.vm.days.value;
     baseColor = widget.vm.baseColor;
   }
 
@@ -28,7 +28,7 @@ class _YearActivityWidgetState extends State<YearActivityWidget> {
   void didUpdateWidget(covariant YearActivityWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    days = widget.vm.days;
+    days = widget.vm.days.value;
     baseColor = widget.vm.baseColor;
   }
 
@@ -51,7 +51,7 @@ class _YearActivityWidgetState extends State<YearActivityWidget> {
   Widget _dayWidgetBuilder(int dayCount) {
     final weekdayOffset = 7 - widget.vm.today.day.weekday;
     final correctDay = dayCount - weekdayOffset;
-    
+
     final isDayActive = correctDay < days.length && correctDay >= 0;
     final inactiveColor = baseColor.inactiveColor;
 

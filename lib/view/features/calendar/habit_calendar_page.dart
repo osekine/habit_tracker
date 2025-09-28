@@ -26,7 +26,7 @@ class _HabitCalendarPageState extends State<HabitCalendarPage> {
     year: DateTime.now().year - 1,
   );
   final DateTime lastCalendarDay = DateTime.now();
-  final focusedCalendarDay = ValueNotifier<DateTime>(DateTime.now());
+  final focusedDay = DateTime.now();
 
   @override
   void initState() {
@@ -37,26 +37,36 @@ class _HabitCalendarPageState extends State<HabitCalendarPage> {
   @override
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.all(8),
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        YearHabitWidget(vm: vm),
-        const Divider(height: 32),
-        ValueListenableBuilder(
-          valueListenable: focusedCalendarDay,
-          builder:
-              (_, focusedDay, __) => TableCalendar(
+    child: ValueListenableBuilder(
+      valueListenable: vm.days,
+      builder:
+          (_, doneDays, __) => Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              YearHabitWidget(vm: vm),
+              const Divider(height: 32),
+              TableCalendar(
                 focusedDay: focusedDay,
                 firstDay: firstCalendarDay,
                 lastDay: lastCalendarDay,
-                headerVisible: false,
-                onDaySelected:
-                    (selectedDay, focusedDay) =>
-                        vm.updateDayProgress(day: selectedDay),
+                // headerVisible: false,
+                onDaySelected: (selectedDay, focusedDay) {
+                  vm.updateDayProgress(day: selectedDay);
+                  setState(() {});
+                },
+                startingDayOfWeek: StartingDayOfWeek.monday,
+                availableCalendarFormats: const {CalendarFormat.month: 'Month'},
+                selectedDayPredicate:
+                    (day) => doneDays.any(
+                      (habit) =>
+                          DateUtils.isSameDay(habit.day, day) &&
+                          habit.isDone.value,
+                    ),
+                // calendarBuilders: CalendarBuilders(),
               ),
-        ),
-        const SizedBox(height: 16),
-      ],
+              const SizedBox(height: 16),
+            ],
+          ),
     ),
   );
 }

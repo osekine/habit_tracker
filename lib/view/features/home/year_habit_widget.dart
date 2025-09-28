@@ -59,7 +59,10 @@ class YearHabitWidget extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 8),
-              YearActivityWidget(vm: vm),
+              ValueListenableBuilder(
+                valueListenable: vm.days,
+                builder: (_, days, __) => YearActivityWidget(vm: vm),
+              ),
             ],
           ),
         ),
