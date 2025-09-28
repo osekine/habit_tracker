@@ -104,7 +104,10 @@ class _EditPageState extends State<EditPage> {
                   ),
                   const SizedBox(height: 8),
                   RepaintBoundary(
-                    child: ColorTable(onColorChangeCallback: _changeColor),
+                    child: ColorTable(
+                      onColorChangeCallback: _changeColor,
+                      initColor: widget.vm.habit?.baseColor,
+                    ),
                   ),
                 ],
               ),
