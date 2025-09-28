@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:habit_tracker/navigation/router.dart';
 import 'package:habit_tracker/view/features/home/year_habit_widget.dart';
+import 'package:habit_tracker/view/widgets/habit_icon_button.dart';
 import 'package:habit_tracker/view_model/view_model.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -42,8 +44,18 @@ class _HabitCalendarPageState extends State<HabitCalendarPage> {
       builder:
           (_, doneDays, __) => Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               YearHabitWidget(vm: vm),
+              Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: HabitIconButton(
+                  onTap: () async => EditRoute(vm).push(context),
+                  icon: const Icon(Icons.edit),
+                  size: 16,
+                  needBorder: true,
+                ),
+              ),
               const Divider(height: 32),
               TableCalendar(
                 focusedDay: focusedDay,

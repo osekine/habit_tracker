@@ -17,11 +17,18 @@ class EditPage extends StatefulWidget {
 }
 
 class _EditPageState extends State<EditPage> {
-  final _nameController = TextEditingController();
-  final _descController = TextEditingController();
+  late final TextEditingController _nameController;
+  late final TextEditingController _descController;
   final _nameFocusNode = FocusNode();
   final _descFocusNode = FocusNode();
   late String colorName;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController(text: widget.vm.habit?.name);
+    _descController = TextEditingController(text: widget.vm.habit?.description);
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
