@@ -28,6 +28,7 @@ class EditPageViewModel implements IEditPageViewModel {
 
   @postConstruct
   void init() {
+    _chosenCategory.value = habit?.category;
     unawaited(_loadCategories());
   }
 

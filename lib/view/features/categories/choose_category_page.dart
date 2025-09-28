@@ -42,7 +42,8 @@ class ChooseCategoryPage extends StatelessWidget {
                                 (e) => HabitCategoryWidget(
                                   vm: e,
                                   onTap: vm.chooseCategory,
-                                  isChosen: e == vm.chosenCategory.value,
+                                  isChosen:
+                                      e.title == vm.chosenCategory.value?.title,
                                 ),
                               )
                               .toList(),

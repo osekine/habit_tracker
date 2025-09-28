@@ -7,11 +7,14 @@ import 'package:habit_tracker/domain/domain.dart';
 import 'package:habit_tracker/theme/habit_color.dart';
 import 'package:habit_tracker/theme/habit_colors.dart';
 import 'package:habit_tracker/view_model/day_habit_view_model.dart';
+import 'package:habit_tracker/view_model/factories/i_category_view_model_factory.dart';
+import 'package:habit_tracker/view_model/i_category_view_model.dart';
 import 'package:habit_tracker/view_model/i_day_habit_view_model.dart';
 import 'package:habit_tracker/view_model/i_year_habit_view_model.dart';
 
 class YearHabitViewModel implements IYearHabitViewModel {
   final IHabitsRepository _habitsRepository;
+  final ICategoryViewModelFactory _categoryFactory;
   final Habit _habit;
   final _days = ValueNotifier<List<IDayHabitViewModel>>([]);
 
@@ -36,8 +39,15 @@ class YearHabitViewModel implements IYearHabitViewModel {
   YearHabitViewModel({
     required Habit habit,
     required IHabitsRepository habitsRepository,
+    required ICategoryViewModelFactory categoryFactory,
   }) : _habitsRepository = habitsRepository,
+       _categoryFactory = categoryFactory,
        _habit = habit {
+    category =
+        _habit.category != null
+            ? _categoryFactory.create(_habit.category!)
+            : null;
+
     baseColor =
     // TODO(NLU): change that cringe
     HabitColor.fromHabitColor(ColorCollection.habits[habit.colorName]!);
@@ -67,7 +77,7 @@ class YearHabitViewModel implements IYearHabitViewModel {
   }
 
   @override
-  String? get categoryName => _habit.category?.name;
+  late final ICategoryViewModel? category;
 
   @override
   void updateDayProgress({required DateTime day}) {

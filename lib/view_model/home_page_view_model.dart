@@ -53,12 +53,19 @@ class HomePageViewModel implements IHomePageViewModel {
       category.isChosen.addListener(
         () async =>
             category.isChosen.value
-                ? _habits.value = await category.fetchHabits()
+                ? _habits.value = _filterHabits(category)
                 : await _loadHabits(),
       );
     }
 
     _activeCategories = newActiveCategories;
+  }
+
+  List<IYearHabitViewModel> _filterHabits(ICategoryViewModel targetCategory) {
+    final filteredHabits =
+        _allHabits.where((habit) => habit.category == targetCategory).toList();
+
+    return filteredHabits;
   }
 
   @override
@@ -77,7 +84,7 @@ class HomePageViewModel implements IHomePageViewModel {
         category == null
             ? _allHabits
             : _allHabits
-                .where((habit) => habit.categoryName == category.title)
+                .where((habit) => habit.category?.title == category.title)
                 .toList();
   }
 
