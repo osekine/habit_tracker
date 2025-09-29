@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
                   delegate: HomePageHeader(
                     maxExtent: 70,
                     minExtent: 50,
-                    onEditTap: () => const EditRoute().go(context),
+                    onEditTap: () async => const EditRoute().push(context),
                   ),
                 ),
                 SliverPersistentHeader(
@@ -62,20 +62,15 @@ class _HomePageState extends State<HomePage> {
                 SliverList(
                   delegate: SliverChildBuilderDelegate((_, index) {
                     final habit = habits[index];
-                    return Center(
-                      child: Column(
-                        children: [
-                          GestureDetector(
-                            onTap:
-                                () async =>
-                                    HabitCalendarPage.showAsModalBottomSheet(
-                                      context,
-                                      vm: habit,
-                                    ),
-                            child: YearHabitWidget(vm: habit),
+                    return GestureDetector(
+                      onTap:
+                          () async => HabitCalendarPage.showAsModalBottomSheet(
+                            context,
+                            vm: widget.vm,
+                            habitId: habit.id,
+                            onUpdate: widget.vm.load,
                           ),
-                        ],
-                      ),
+                      child: YearHabitWidget(vm: habit),
                     );
                   }, childCount: habits.length,),
                 ),
