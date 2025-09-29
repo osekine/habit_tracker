@@ -13,7 +13,6 @@ import 'package:injectable/injectable.dart';
 @Injectable(as: IEditPageViewModel)
 class EditPageViewModel implements IEditPageViewModel {
   final IHabitsRepository _repository;
-  final IYearHabitViewModel? _habit;
   final ICategoryViewModelFactory _categoriesFactory;
 
   final _chosenCategory = ValueNotifier<ICategoryViewModel?>(null);
@@ -25,12 +24,16 @@ class EditPageViewModel implements IEditPageViewModel {
     @factoryParam IYearHabitViewModel? editableHabit,
   }) : _repository = repository,
        _categoriesFactory = categoriesFactory,
-       _habit = editableHabit;
+       habit = editableHabit;
 
   @postConstruct
   void init() {
+    _chosenCategory.value = habit?.category;
     unawaited(_loadCategories());
   }
+
+  @override
+  final IYearHabitViewModel? habit;
 
   @override
   Future<void> saveHabit(
@@ -43,12 +46,12 @@ class EditPageViewModel implements IEditPageViewModel {
 
     await _repository.saveHabits(
       Habit(
-        id: _habit?.id ?? newId,
+        id: habit?.id ?? newId,
         name: name,
         description: description,
         colorName: colorName,
         days:
-            _habit?.days
+            habit?.days.value
                 .map(
                   (day) =>
                       DailyProgress(day: day.day, progress: day.count.value),

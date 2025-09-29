@@ -1,14 +1,22 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:habit_tracker/data/i_habits_repository.dart';
 import 'package:habit_tracker/domain/domain.dart';
 import 'package:habit_tracker/theme/habit_color.dart';
 import 'package:habit_tracker/theme/habit_colors.dart';
 import 'package:habit_tracker/view_model/day_habit_view_model.dart';
+import 'package:habit_tracker/view_model/factories/i_category_view_model_factory.dart';
+import 'package:habit_tracker/view_model/i_category_view_model.dart';
 import 'package:habit_tracker/view_model/i_day_habit_view_model.dart';
 import 'package:habit_tracker/view_model/i_year_habit_view_model.dart';
 
 class YearHabitViewModel implements IYearHabitViewModel {
   final IHabitsRepository _habitsRepository;
+  final ICategoryViewModelFactory _categoryFactory;
   final Habit _habit;
+  final _days = ValueNotifier<List<IDayHabitViewModel>>([]);
 
   @override
   late final HabitColor baseColor;
@@ -17,7 +25,7 @@ class YearHabitViewModel implements IYearHabitViewModel {
   int get id => _habit.id;
 
   @override
-  late final List<IDayHabitViewModel> days;
+  ValueListenable<List<IDayHabitViewModel>> get days => _days;
 
   @override
   String? get description => _habit.description;
@@ -26,17 +34,24 @@ class YearHabitViewModel implements IYearHabitViewModel {
   String get name => _habit.name;
 
   @override
-  IDayHabitViewModel get today => days[0];
+  IDayHabitViewModel get today => days.value[0];
 
   YearHabitViewModel({
     required Habit habit,
     required IHabitsRepository habitsRepository,
+    required ICategoryViewModelFactory categoryFactory,
   }) : _habitsRepository = habitsRepository,
+       _categoryFactory = categoryFactory,
        _habit = habit {
+    category =
+        _habit.category != null
+            ? _categoryFactory.create(_habit.category!)
+            : null;
+
     baseColor =
     // TODO(NLU): change that cringe
     HabitColor.fromHabitColor(ColorCollection.habits[habit.colorName]!);
-    days =
+    _days.value =
         habit.days
             .map(
               (dailyProgress) => DayHabitViewModel(
@@ -52,7 +67,7 @@ class YearHabitViewModel implements IYearHabitViewModel {
   @override
   Future<void> saveChanges() async {
     final daysToSave =
-        days
+        days.value
             .map(
               (dayVM) =>
                   DailyProgress(day: dayVM.day, progress: dayVM.count.value),
@@ -60,7 +75,42 @@ class YearHabitViewModel implements IYearHabitViewModel {
             .toList();
     await _habitsRepository.saveHabits(_habit.copyWith(days: daysToSave));
   }
-  
+
   @override
-  String? get categoryName => _habit.category?.name;
+  late final ICategoryViewModel? category;
+
+  @override
+  void updateDayProgress({required DateTime day}) {
+    final neededDay = _days.value.firstWhere(
+      (dayVM) => DateUtils.isSameDay(dayVM.day, day),
+      orElse:
+          () => DayHabitViewModel(
+            day: day,
+            habitColor: HabitColor.fromHabitColor(baseColor),
+            save: saveChanges,
+          ),
+    )..add();
+
+    if (_days.value.contains(neededDay)) return;
+
+    _addNewDays(neededDay);
+  }
+
+  void _addNewDays(IDayHabitViewModel newDay) {
+    final firstDay = _days.value.last.day;
+    final daysCount = firstDay.difference(newDay.day);
+
+    _days.value = [
+      ..._days.value,
+      for (int i = 1; i < daysCount.inDays; ++i)
+        DayHabitViewModel(
+          day: firstDay.subtract(Duration(days: i)),
+          habitColor: HabitColor.fromHabitColor(baseColor),
+          save: saveChanges,
+        ),
+      newDay,
+    ];
+
+    unawaited(saveChanges());
+  }
 }

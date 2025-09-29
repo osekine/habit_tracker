@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:habit_tracker/theme/habit_color.dart';
 import 'package:habit_tracker/theme/habit_colors.dart';
 import 'package:habit_tracker/view/features/edit/color_cell.dart';
 
 class ColorTable extends StatefulWidget {
   final void Function(String)? onColorChangeCallback;
-  const ColorTable({super.key, this.onColorChangeCallback});
+  final HabitColor? initColor;
+  const ColorTable({super.key, this.onColorChangeCallback, this.initColor});
 
   @override
   State<ColorTable> createState() => _ColorTableState();
@@ -16,6 +18,12 @@ class _ColorTableState extends State<ColorTable> {
   @override
   void initState() {
     super.initState();
+
+    if (widget.initColor != null) {
+      _colorIndex.value = ColorCollection.habits.values.toList().indexWhere(
+        (habitColor) => habitColor.baseColor == widget.initColor!.baseColor,
+      );
+    }
 
     _onChangeColor();
     _colorIndex.addListener(_onChangeColor);

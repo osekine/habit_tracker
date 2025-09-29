@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:habit_tracker/navigation/router.dart';
 import 'package:habit_tracker/theme/habit_colors.dart';
 import 'package:habit_tracker/view/features/categories/choose_category_page.dart';
@@ -17,11 +18,18 @@ class EditPage extends StatefulWidget {
 }
 
 class _EditPageState extends State<EditPage> {
-  final _nameController = TextEditingController();
-  final _descController = TextEditingController();
+  late final TextEditingController _nameController;
+  late final TextEditingController _descController;
   final _nameFocusNode = FocusNode();
   final _descFocusNode = FocusNode();
   late String colorName;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController(text: widget.vm.habit?.name);
+    _descController = TextEditingController(text: widget.vm.habit?.description);
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -36,20 +44,26 @@ class _EditPageState extends State<EditPage> {
             minExtent: 50,
             maxExtent: 70,
             vm: widget.vm,
-            onApplyTap: () {
+            onApplyTap: () async {
               if (_nameController.text.isEmpty) {
                 _nameFocusNode.requestFocus();
                 return;
               }
-              widget.vm.saveHabit(
+              await widget.vm.saveHabit(
                 _nameController.text,
                 _descController.text,
                 colorName,
               );
-              HomeRoute().go(context);
+              if (context.mounted) {
+                context.pop(true);
+              }
             },
             onCrossTap: () {
-              HomeRoute().go(context);
+              if (context.mounted) {
+                context.pop();
+              } else {
+                HomeRoute().go(context);
+              }
             },
           ),
         ),
@@ -97,7 +111,10 @@ class _EditPageState extends State<EditPage> {
                   ),
                   const SizedBox(height: 8),
                   RepaintBoundary(
-                    child: ColorTable(onColorChangeCallback: _changeColor),
+                    child: ColorTable(
+                      onColorChangeCallback: _changeColor,
+                      initColor: widget.vm.habit?.baseColor,
+                    ),
                   ),
                 ],
               ),

@@ -33,7 +33,7 @@ class HabitIconButton extends StatelessWidget {
                 : null,
         color: backgroundColor,
       ),
-      child: icon,
+      child: Padding(padding: EdgeInsets.all(size * 0.25), child: icon),
     ),
   );
 }

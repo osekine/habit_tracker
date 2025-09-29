@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:habit_tracker/theme/habit_color.dart';
 import 'package:habit_tracker/view_model/i_day_habit_view_model.dart';
 
@@ -10,12 +11,13 @@ class DayHabitViewModel implements IDayHabitViewModel {
   final ValueNotifier<bool> _isDone = ValueNotifier(false);
   final HabitColor _habitColor;
   final Future<void> Function() _save;
+  final DateTime _day;
 
   @override
   ValueListenable<int> get count => _count;
 
   @override
-  final DateTime day;
+  DateTime get day => _day;
 
   @override
   final bool isStrict;
@@ -36,7 +38,7 @@ class DayHabitViewModel implements IDayHabitViewModel {
   }
 
   DayHabitViewModel({
-    required this.day,
+    required DateTime day,
     required HabitColor habitColor,
     required Future<void> Function() save,
     int count = 0,
@@ -44,7 +46,8 @@ class DayHabitViewModel implements IDayHabitViewModel {
     this.isStrict = true,
     this.treshold = 1,
   }) : _habitColor = habitColor,
-       _save = save {
+       _save = save,
+       _day = DateUtils.dateOnly(day) {
     _count.value = count;
     _isDone.value = isDone;
     _init();
